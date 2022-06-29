@@ -1,9 +1,11 @@
-import Head from "next/head";
-import { Box, Checkbox, Container, FormControlLabel, FormGroup, Typography } from "@mui/material";
-import { DashboardLayout } from "../components/dashboard-layout";
-import { FromCoinField } from "../components/convert/from-coin-field";
-import { ToCoinField } from "../components/convert/to-coin-field";
-import ConvertButton from "../components/convert/convert-button";
+import Head from 'next/head';
+import { Box, Checkbox, Container, FormControlLabel, FormGroup, Typography } from '@mui/material';
+import { DashboardLayout } from '../components/dashboard-layout';
+import { FromCoinField } from '../components/convert/from-coin-field';
+import { ToCoinField } from '../components/convert/to-coin-field';
+import ConvertButton from '../components/convert/convert-button';
+import IconButton from '@mui/material/IconButton';
+import SwapVertIcon from '@mui/icons-material/SwapVert';
 
 const Customers = () => (
   <>
@@ -14,17 +16,17 @@ const Customers = () => (
       component="main"
       sx={{
         flexGrow: 1,
-        py: 8,
+        py: 8
       }}
     >
       <Container maxWidth={false}>
         <Box
           component="main"
           sx={{
-            alignItems: "center",
-            display: "flex",
+            alignItems: 'center',
+            display: 'flex',
             flexGrow: 1,
-            minHeight: "100%",
+            minHeight: '100%'
           }}
         >
           <Container maxWidth="sm">
@@ -43,7 +45,17 @@ const Customers = () => (
               />
             </FormGroup>
             <Box height={16} />
-
+            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+              <IconButton
+                aria-label="switch-currencies"
+                disableRipple
+                disableFocusRipple
+                style={{ backgroundColor: 'transparent' }}
+                onClick={() => console.log(`do some swapping here!`)}
+              >
+                <SwapVertIcon />
+              </IconButton>
+            </Box>
             <ToCoinField />
             <Typography variant="caption">Estimated: 1 ETH = 0.03 BTC</Typography>
 
