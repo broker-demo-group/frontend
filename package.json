@@ -1,18 +1,18 @@
 {
-  "name": "material-kit-react",
-  "author": "Devias IO",
-  "licence": "MIT",
-  "version": "2.0.0",
-  "private": false,
+  "name": "broker-demo-account",
+  "version": "0.1.0",
+  "private": true,
   "scripts": {
-    "dev": "next",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "export": "next export",
-    "lint": "next lint",
-    "lint-fix": "next lint --fix"
+    "lint": "next lint"
   },
   "dependencies": {
+    "next": "12.1.6",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "stylis": "^4.1.1",
     "@emotion/cache": "^11.5.0",
     "@emotion/react": "^11.5.0",
     "@emotion/server": "^11.4.0",
@@ -25,19 +25,15 @@
     "date-fns": "^2.25.0",
     "formik": "^2.1.5",
     "history": "^5.0.0",
-    "next": "^12.0.3-canary.7",
     "nprogress": "^0.2.0",
     "prop-types": "^15.7.2",
-    "react": "^17.0.2",
     "react-chartjs-2": "^3.0.4",
-    "react-dom": "^17.0.2",
     "react-perfect-scrollbar": "^1.5.8",
     "uuid": "^8.3.0",
     "yup": "^0.32.9"
   },
   "devDependencies": {
-    "eslint": "^7.32.0",
-    "eslint-config-next": "12.0.3-canary.7",
-    "prettier": "^2.7.1"
+    "eslint": "8.18.0",
+    "eslint-config-next": "12.1.6"
   }
 }
