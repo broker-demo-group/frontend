@@ -1,16 +1,9 @@
 import Head from "next/head";
-import {
-  Box,
-  Button,
-  Container,
-  FormGroup,
-  FormControlLabel,
-  Checkbox,
-  Typography,
-} from "@mui/material";
+import { Box, Checkbox, Container, FormControlLabel, FormGroup, Typography } from "@mui/material";
 import { DashboardLayout } from "../components/dashboard-layout";
 import { FromCoinField } from "../components/convert/from-coin-field";
 import { ToCoinField } from "../components/convert/to-coin-field";
+import ConvertButton from "../components/convert/convert-button";
 
 const Customers = () => (
   <>
@@ -55,9 +48,7 @@ const Customers = () => (
             <Typography variant="caption">Estimated: 1 ETH = 0.03 BTC</Typography>
 
             <Box height={16} />
-            <Button color="primary" variant="contained" fullWidth={true}>
-              Convert
-            </Button>
+            <ConvertButton handleConfirmCallback={() => {}} handleCancelCallback={() => {}} />
           </Container>
         </Box>
       </Container>
