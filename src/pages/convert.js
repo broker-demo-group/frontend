@@ -11,7 +11,8 @@ import { useEffect, useState } from "react";
 import { API_TEST } from "../api/constants";
 import { ASSET_CURRENCIES_INFO, SWAPPABLE_CURRENCIES } from "src/api/currencies";
 
-const Customers = (props) => {
+function Customers(props) {
+  console.log(props);
   const { currenciesInfo, swappableCurrencies } = props;
   const [swappableCoins, setSwappableCoins] = useState([
     { label: "BTC", logoLink: "" },
@@ -123,11 +124,11 @@ const Customers = (props) => {
       </Box>
     </>
   );
-};
+}
 
 Customers.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;
 
-Customers.getInitialProps = async (ctx) => {
+export const getServerSideProps = async (ctx) => {
   const promises = [axios.get(ASSET_CURRENCIES_INFO), axios.get(SWAPPABLE_CURRENCIES)];
   try {
     const responses = await Promise.all(promises);
@@ -138,11 +139,13 @@ Customers.getInitialProps = async (ctx) => {
     // const res = await axios.get(ASSET_CURRENCIES_INFO);
 
     return {
-      currenciesInfo: responses[0].data.map((e) => ({ ccy: e.ccy, logoLink: e.logoLink })),
-      swappableCurrencies: responses[1].data,
+      props: {
+        currenciesInfo: responses[0].data.map((e) => ({ ccy: e.ccy, logoLink: e.logoLink })),
+        swappableCurrencies: responses[1].data,
+      },
     };
   } catch {
-    return { currenciesInfo: "failed", swappableCurrencies: "failed" };
+    return { props: { currenciesInfo: "failed", swappableCurrencies: "failed" } };
   }
 };
 
