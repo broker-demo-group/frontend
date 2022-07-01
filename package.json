@@ -32,10 +32,14 @@
     "react-perfect-scrollbar": "^1.5.8",
     "stylis": "^4.1.1",
     "uuid": "^8.3.0",
-    "yup": "^0.32.9"
+    "yup": "^0.32.9",
+    "swr": "^1.0.1",
+    "bcryptjs": "^2.4.3"
   },
   "devDependencies": {
-    "eslint": "8.18.0",
-    "eslint-config-next": "12.1.6"
+    "@types/node": "^18.0.0",
+    "eslint": "^7.32.0",
+    "eslint-config-next": "12.0.3-canary.7",
+    "prettier": "^2.7.1"
   }
 }
