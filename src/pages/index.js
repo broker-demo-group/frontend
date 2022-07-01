@@ -14,7 +14,7 @@ const Dashboard = () => (
   <>
     <Head>
       <title>
-        Dashboard | Material Kit
+        Dashboard | Broker Demo Account
       </title>
     </Head>
     <Box
@@ -36,7 +36,7 @@ const Dashboard = () => (
             xl={3}
             xs={12}
           >
-            <Budget />
+            <Budget/>
           </Grid>
           <Grid
             item
@@ -45,7 +45,7 @@ const Dashboard = () => (
             sm={6}
             xs={12}
           >
-            <TotalCustomers />
+            <TotalCustomers/>
           </Grid>
           <Grid
             item
@@ -54,7 +54,7 @@ const Dashboard = () => (
             sm={6}
             xs={12}
           >
-            <TasksProgress />
+            <TasksProgress/>
           </Grid>
           <Grid
             item
@@ -63,7 +63,7 @@ const Dashboard = () => (
             sm={6}
             xs={12}
           >
-            <TotalProfit sx={{ height: '100%' }} />
+            <TotalProfit sx={{ height: '100%' }}/>
           </Grid>
           <Grid
             item
@@ -72,7 +72,7 @@ const Dashboard = () => (
             xl={9}
             xs={12}
           >
-            <Sales />
+            <Sales/>
           </Grid>
           <Grid
             item
@@ -81,7 +81,7 @@ const Dashboard = () => (
             xl={3}
             xs={12}
           >
-            <TrafficByDevice sx={{ height: '100%' }} />
+            <TrafficByDevice sx={{ height: '100%' }}/>
           </Grid>
           <Grid
             item
@@ -90,7 +90,7 @@ const Dashboard = () => (
             xl={3}
             xs={12}
           >
-            <LatestProducts sx={{ height: '100%' }} />
+            <LatestProducts sx={{ height: '100%' }}/>
           </Grid>
           <Grid
             item
@@ -99,7 +99,7 @@ const Dashboard = () => (
             xl={9}
             xs={12}
           >
-            <LatestOrders />
+            <LatestOrders/>
           </Grid>
         </Grid>
       </Container>

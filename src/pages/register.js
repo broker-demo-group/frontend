@@ -64,7 +64,7 @@ const Register = () => {
     <>
       <Head>
         <title>
-          Register | Material Kit
+          Register | Broker Demo
         </title>
       </Head>
       <Box
@@ -83,7 +83,7 @@ const Register = () => {
           >
             <Button
               component="a"
-              startIcon={<ArrowBackIcon fontSize="small" />}
+              startIcon={<ArrowBackIcon fontSize="small"/>}
             >
               Dashboard
             </Button>

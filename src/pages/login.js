@@ -12,7 +12,7 @@ const Login = () => {
   const router = useRouter();
   const formik = useFormik({
     initialValues: {
-      email: 'demo@devias.io',
+      email: 'broker123@gmail.com',
       password: 'Password123'
     },
     validationSchema: Yup.object({
@@ -37,7 +37,7 @@ const Login = () => {
   return (
     <>
       <Head>
-        <title>Login | Material Kit</title>
+        <title>Login | Broker Demo</title>
       </Head>
       <Box
         component="main"
@@ -55,7 +55,7 @@ const Login = () => {
           >
             <Button
               component="a"
-              startIcon={<ArrowBackIcon fontSize="small" />}
+              startIcon={<ArrowBackIcon fontSize="small"/>}
             >
               Dashboard
             </Button>
@@ -88,7 +88,7 @@ const Login = () => {
                 <Button
                   color="info"
                   fullWidth
-                  startIcon={<FacebookIcon />}
+                  startIcon={<FacebookIcon/>}
                   onClick={formik.handleSubmit}
                   size="large"
                   variant="contained"
@@ -104,7 +104,7 @@ const Login = () => {
                 <Button
                   fullWidth
                   color="error"
-                  startIcon={<GoogleIcon />}
+                  startIcon={<GoogleIcon/>}
                   onClick={formik.handleSubmit}
                   size="large"
                   variant="contained"
