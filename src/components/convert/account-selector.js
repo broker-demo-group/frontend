@@ -5,15 +5,15 @@ import { getCcyBalance } from "../../api/account";
 import axios from "axios";
 
 export const AccountSelector = (props) => {
-  const { fromCoinLabel, accountBalanceUpdateCallback } = props;
-  const [balance, setBalance] = useState(0.0);
+  const { balance, fromCoinLabel, setAvailBal } = props;
+  //   const [balance, setBalance] = useState(0.0);
 
   useEffect(() => {
     axios
       .get(getCcyBalance(fromCoinLabel))
       .then((res) => {
-        const { availBal } = res;
-        setBalance(availBal ?? 0.0);
+        const { availBal } = res.data[0];
+        setAvailBal(availBal ?? 0.0);
       })
       .catch((err) => {
         console.error(`error with getting balance: ${err}`);

@@ -21,6 +21,7 @@ function Customers(props) {
   ]);
   const [fromCoin, setFromCoin] = useState({ label: "BTC", logoLink: "" });
   const [toCoin, setToCoin] = useState({ label: "ETH", logoLink: "" });
+  const [availBal, setAvailBal] = useState(0);
 
   useEffect(() => {
     console.log(`swappableCurrencies: ${JSON.stringify(swappableCurrencies)}`);
@@ -65,10 +66,15 @@ function Customers(props) {
             <Container maxWidth="sm">
               <FromCoinField
                 coinSelected={fromCoin}
+                availBal={availBal}
                 swappableCoins={swappableCoins}
                 onSelectNewCoin={setFromCoin}
               />
-              <AccountSelector fromCoinLabel={fromCoin.label} />
+              <AccountSelector
+                balance={availBal}
+                fromCoinLabel={fromCoin.label}
+                setAvailBal={setAvailBal}
+              />
               <Box height={16} />
               <Box sx={{ display: "flex", justifyContent: "center" }}>
                 <IconButton aria-label="switch-currencies" onClick={swapCoins}>

@@ -3,7 +3,7 @@ import { Autocomplete, Box, Input, InputAdornment, TextField, Typography } from 
 const ariaLabel = { "aria-label": "fromCurrency" };
 
 export const FromCoinField = (props) => {
-  const { coinSelected, swappableCoins, onSelectNewCoin } = props;
+  const { availBal, coinSelected, swappableCoins, onSelectNewCoin } = props;
   return (
     <Box>
       <Typography variant="body2">From</Typography>
@@ -16,7 +16,7 @@ export const FromCoinField = (props) => {
           border: "1px solid grey",
         }}
       >
-        <Input placeholder="0.00000" inputProps={ariaLabel} disableUnderline={true} />
+        <Input error={true} placeholder="0.00000" inputProps={ariaLabel} disableUnderline={true} />
         <Box
           sx={{
             display: "flex",
