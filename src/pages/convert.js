@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { Box, Checkbox, Container, FormControlLabel, FormGroup, Typography } from "@mui/material";
+import { Box, Container, Typography } from "@mui/material";
 import { DashboardLayout } from "../components/dashboard-layout";
 import { FromCoinField } from "../components/convert/from-coin-field";
 import { ToCoinField } from "../components/convert/to-coin-field";
@@ -8,8 +8,9 @@ import IconButton from "@mui/material/IconButton";
 import SwapVertIcon from "@mui/icons-material/SwapVert";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { API_TEST } from "../api/constants";
 import { ASSET_CURRENCIES_INFO, SWAPPABLE_CURRENCIES } from "src/api/currencies";
+import { AccountSelector } from "../components/convert/account-selector";
+import { Estimator } from "../components/convert/estimator";
 
 function Customers(props) {
   console.log(props);
@@ -31,21 +32,6 @@ function Customers(props) {
     setFromCoin(updatedSwappableCurrencies[0]);
     setToCoin(updatedSwappableCurrencies[1]);
   }, []);
-
-  // useEffect(() => {
-  //   const config = {
-  //     headers: {
-  //       "Access-Control-Allow-Origin": "*",
-  //     },
-  //   };
-  //   console.log(`useEffect`);
-  //   axios.defaults.headers.get["Access-Control-Allow-Origin"] = "*";
-  //   console.log(`enable cors`);
-  //   axios
-  //     .get(sysTest, config)
-  //     .then((response) => console.log(response))
-  //     .catch((e) => console.log(`ERRROR: ${e}`));
-  // }, []);
 
   const swapCoins = () => {
     const a = fromCoin;
@@ -82,30 +68,10 @@ function Customers(props) {
                 swappableCoins={swappableCoins}
                 onSelectNewCoin={setFromCoin}
               />
-              <Typography variant="caption">Available: 0.000000</Typography>
-              <FormGroup>
-                <FormControlLabel
-                  fontSize="small"
-                  control={
-                    <Checkbox size="small" disableRipple defaultChecked sx={{ height: 10 }} />
-                  }
-                  label={<Typography fontSize="small">Funding account: 0.0000</Typography>}
-                />
-                <FormControlLabel
-                  fontSize="small"
-                  control={<Checkbox size="small" sx={{ height: 10 }} disableRipple />}
-                  label={<Typography fontSize="small">Trading account: 0.0000</Typography>}
-                />
-              </FormGroup>
+              <AccountSelector fromCoinLabel={fromCoin.label} />
               <Box height={16} />
               <Box sx={{ display: "flex", justifyContent: "center" }}>
-                <IconButton
-                  aria-label="switch-currencies"
-                  // disableRipple
-                  // disableFocusRipple
-                  // style={{ backgroundColor: "transparent" }}
-                  onClick={swapCoins}
-                >
+                <IconButton aria-label="switch-currencies" onClick={swapCoins}>
                   <SwapVertIcon />
                 </IconButton>
               </Box>
@@ -114,8 +80,7 @@ function Customers(props) {
                 swappableCoins={swappableCoins}
                 onSelectNewCoin={setToCoin}
               />
-              <Typography variant="caption">Estimated: 1 ETH = 0.03 BTC</Typography>
-
+              <Estimator fromCoinLabel={fromCoin.label} toCoinLabel={toCoin.label} />
               <Box height={16} />
               <ConvertButton handleConfirmCallback={() => {}} handleCancelCallback={() => {}} />
             </Container>
@@ -132,12 +97,6 @@ export const getServerSideProps = async (ctx) => {
   const promises = [axios.get(ASSET_CURRENCIES_INFO), axios.get(SWAPPABLE_CURRENCIES)];
   try {
     const responses = await Promise.all(promises);
-
-    // return { currenciesInfo: responses[0].data, swappableCurrencies: "test" };
-    // const res = await axios.get("https://randomuser.me/api/?results=5");
-    // console.log(ASSET_CURRENCIES_INFO);
-    // const res = await axios.get(ASSET_CURRENCIES_INFO);
-
     return {
       props: {
         currenciesInfo: responses[0].data.map((e) => ({ ccy: e.ccy, logoLink: e.logoLink })),
