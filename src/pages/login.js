@@ -8,9 +8,16 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { Facebook as FacebookIcon } from "../icons/facebook";
 import { Google as GoogleIcon } from "../icons/google";
 import fetchJson from "../lib/fetchJson";
+import useUser from "../lib/useUser";
 
 const Login = () => {
   const router = useRouter();
+
+  const { mutateUser } = useUser({
+    redirectTo: "/",
+    redirectIfFound: true,
+  });
+
   const formik = useFormik({
     initialValues: {
       username: "broker123",
@@ -21,13 +28,29 @@ const Login = () => {
       password: Yup.string().max(255).required("Password is required"),
     }),
     onSubmit: async (values) => {
-      console.log("sending POST request");
-      const res = await fetchJson("http://45.12.144.105:8080/api/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(values),
-      });
-      console.log(`response: ${JSON.stringify(res)}`);
+      try {
+        const res = await fetchJson("http://45.12.144.105:8080/api/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(values),
+        });
+        console.log(`response: ${JSON.stringify(res)}`);
+
+        const body = {
+          username: values.username,
+        };
+        mutateUser(
+          await fetchJson("/api/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body),
+          })
+        );
+        console.log("after api/login");
+      } catch (error) {
+        console.log(`normal log error: ${error}`);
+        console.error(`Error occured: ${error.data.message}`);
+      }
     },
   });
 
