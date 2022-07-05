@@ -9,6 +9,7 @@ First:
 Denpendencies installment
 ```
 npm install -g yarn
+yarn install
 ```
 
 Run the development server
