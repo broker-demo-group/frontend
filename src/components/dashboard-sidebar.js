@@ -7,11 +7,10 @@ import { ChartBar as ChartBarIcon } from "../icons/chart-bar";
 import { Lock as LockIcon } from "../icons/lock";
 import { Selector as SelectorIcon } from "../icons/selector";
 import { User as UserIcon } from "../icons/user";
-import { Selector as SelectorIcon } from "../icons/selector";
-import { UserAdd as UserAddIcon } from "../icons/user-add";
-import { Users as UsersIcon } from "../icons/users";
+import useUser from "../lib/useUser";
 import { Logo } from "./logo";
 import { NavItem } from "./nav-item";
+import fetchJson from "../lib/fetchJson";
 
 const items = [
   {
@@ -21,28 +20,19 @@ const items = [
   },
   {
     href: "/convert",
-    icon: <UsersIcon fontSize="small" />,
-    title: "Convert",
-  },
-  {
-    href: "/account",
     icon: <UserIcon fontSize="small" />,
-    title: "Account",
+    title: "Convert",
   },
   {
     href: "/login",
     icon: <LockIcon fontSize="small" />,
     title: "Login",
   },
-  {
-    href: "/register",
-    icon: <UserAddIcon fontSize="small" />,
-    title: "Register",
-  },
 ];
 
 export const DashboardSidebar = (props) => {
   const { open, onClose } = props;
+  const { user, mutateUser } = useUser();
   const router = useRouter();
   const lgUp = useMediaQuery((theme) => theme.breakpoints.up("lg"), {
     defaultMatches: true,
@@ -113,63 +103,6 @@ export const DashboardSidebar = (props) => {
                   height: 14,
                 }}
               />
-
-              <div>
-                <Box sx={{ p: 3 }}>
-                  <NextLink href="/" passHref>
-                    <a>
-                      <Logo
-                        sx={{
-                          height: 42,
-                          width: 42,
-                        }}
-                      />
-                    </a>
-                  </NextLink>
-                </Box>
-                <Box sx={{ px: 2 }}>
-                  <Box
-                    sx={{
-                      alignItems: "center",
-                      backgroundColor: "rgba(255, 255, 255, 0.04)",
-                      cursor: "pointer",
-                      display: "flex",
-                      justifyContent: "space-between",
-                      px: 3,
-                      py: "11px",
-                      borderRadius: 1,
-                    }}
-                  >
-                    <div>
-                      <Typography color="inherit" variant="subtitle1">
-                        Acme Inc
-                      </Typography>
-                      <Typography color="neutral.400" variant="body2">
-                        Your tier : Premium
-                      </Typography>
-                    </div>
-                    <SelectorIcon
-                      sx={{
-                        color: "neutral.500",
-                        width: 14,
-                        height: 14,
-                      }}
-                    />
-                  </Box>
-                </Box>
-              </div>
-              <Divider
-                sx={{
-                  borderColor: "#2D3748",
-                  my: 3,
-                }}
-              />
-              <Box sx={{ flexGrow: 1 }}>
-                {items.map((item) => (
-                  <NavItem key={item.title} icon={item.icon} href={item.href} title={item.title} />
-                ))}
-              </Box>
-              <Divider sx={{ borderColor: "#2D3748" }} />
             </Box>
           </Box>
         </div>
@@ -180,19 +113,60 @@ export const DashboardSidebar = (props) => {
           }}
         />
         <Box sx={{ flexGrow: 1 }}>
-          {items.map((item) => (
-            <NavItem key={item.title} icon={item.icon} href={item.href} title={item.title} />
-          ))}
+          {items.map((item) => {
+            return (
+              <NavItem
+                key={item.title}
+                icon={item.icon}
+                href={item.href}
+                title={item.title}
+                onClick={item.onClick}
+              />
+            );
+          })}
+          {user?.isLoggedIn === true && (
+            <NavItem
+              key="logout"
+              icon={<LockIcon fontSize="small" />}
+              href="/api/logout"
+              title="logout"
+              onClick={async (e) => {
+                e.preventDefault();
+                mutateUser(await fetchJson("/api/logout", { method: "POST" }), false);
+                router.push("/login");
+              }}
+            />
+          )}
         </Box>
         <Divider sx={{ borderColor: "#2D3748" }} />
       </Box>
     </>
   );
 
+  if (lgUp) {
+    return (
+      <Drawer
+        anchor="left"
+        open
+        PaperProps={{
+          sx: {
+            backgroundColor: "neutral.900",
+            color: "#FFFFFF",
+            width: 280,
+          },
+        }}
+        variant="permanent"
+      >
+        {content}
+      </Drawer>
+    );
+  }
+
   return (
     <Drawer
       anchor="left"
-      open
+      onClose={onClose}
+      open={open}
       PaperProps={{
         sx: {
           backgroundColor: "neutral.900",
@@ -200,7 +174,8 @@ export const DashboardSidebar = (props) => {
           width: 280,
         },
       }}
-      variant="permanent"
+      sx={{ zIndex: (theme) => theme.zIndex.appBar + 100 }}
+      variant="temporary"
     >
       {content}
     </Drawer>

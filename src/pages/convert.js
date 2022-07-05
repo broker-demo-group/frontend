@@ -30,8 +30,10 @@ function Customers(props) {
       logoLink: currenciesInfo.find((i) => e.ccy === i.ccy).logoLink,
     }));
     setSwappableCoins(updatedSwappableCurrencies);
-    setFromCoin(updatedSwappableCurrencies[0]);
-    setToCoin(updatedSwappableCurrencies[1]);
+    if (updatedSwappableCurrencies.length >= 2) {
+      setFromCoin(updatedSwappableCurrencies[0]);
+      setToCoin(updatedSwappableCurrencies[1]);
+    }
   }, []);
 
   const swapCoins = () => {
@@ -110,7 +112,7 @@ export const getServerSideProps = async (ctx) => {
       },
     };
   } catch {
-    return { props: { currenciesInfo: "failed", swappableCurrencies: "failed" } };
+    return { props: { currenciesInfo: [], swappableCurrencies: [] } };
   }
 };
 
