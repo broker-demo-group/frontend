@@ -1,11 +1,13 @@
 import Head from "next/head";
+import { SWRConfig } from "swr";
 import { CacheProvider } from "@emotion/react";
-import LocalizationProvider from "@mui/lab/LocalizationProvider";
+import { LocalizationProvider } from "@mui/x-date-pickers";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import { CssBaseline } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
 import { createEmotionCache } from "../utils/create-emotion-cache";
 import { theme } from "../theme";
+import fetchJson from "../lib/fetchJson";
 
 const clientSideEmotionCache = createEmotionCache();
 
@@ -22,8 +24,17 @@ const App = (props) => {
       </Head>
       <LocalizationProvider dateAdapter={AdapterDateFns}>
         <ThemeProvider theme={theme}>
-          <CssBaseline />
-          {getLayout(<Component {...pageProps} />)}
+          <SWRConfig
+            value={{
+              fetcher: fetchJson,
+              onError: (err) => {
+                console.error(err);
+              },
+            }}
+          >
+            <CssBaseline />
+            {getLayout(<Component {...pageProps} />)}
+          </SWRConfig>
         </ThemeProvider>
       </LocalizationProvider>
     </CacheProvider>

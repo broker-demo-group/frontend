@@ -18,8 +18,12 @@
     "@mui/material": "^5.0.6",
     "@mui/styles": "^5.0.2",
 <<<<<<< HEAD
+<<<<<<< HEAD
     "axios": "^0.27.2",
 =======
+=======
+    "@mui/x-date-pickers": "^5.0.0-alpha.7",
+>>>>>>> 34ef78f (Add swrconfig for default fetcher when using useSwr)
     "bcryptjs": "^2.4.3",
 >>>>>>> fed3355 (add partially completed auth)
     "chart.js": "^3.5.1",

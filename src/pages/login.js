@@ -29,12 +29,12 @@ const Login = () => {
     }),
     onSubmit: async (values) => {
       try {
-        const res = await fetchJson("http://45.12.144.105:8080/api/login", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(values),
-        });
-        console.log(`response: ${JSON.stringify(res)}`);
+        // const res = await fetchJson("http://45.12.144.105:8080/api/login", {
+        //   method: "POST",
+        //   headers: { "Content-Type": "application/json" },
+        //   body: JSON.stringify(values),
+        // });
+        // console.log(`response: ${JSON.stringify(res)}`);
 
         const body = {
           username: values.username,

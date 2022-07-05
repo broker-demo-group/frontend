@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { Box, Container, Typography } from "@mui/material";
+import { Box, Checkbox, Container, FormControlLabel, FormGroup, Typography } from "@mui/material";
 import { DashboardLayout } from "../components/dashboard-layout";
 import { FromCoinField } from "../components/convert/from-coin-field";
 import { ToCoinField } from "../components/convert/to-coin-field";
