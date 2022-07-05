@@ -5,7 +5,7 @@ import { getCcyBalance } from "../../api/account";
 import axios from "axios";
 
 export const AccountSelector = (props) => {
-  const { balance, fromCoinLabel, setAvailBal } = props;
+  const { balance, fromCoinLabel = "", setAvailBal } = props;
   //   const [balance, setBalance] = useState(0.0);
 
   useEffect(() => {
