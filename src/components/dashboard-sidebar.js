@@ -121,10 +121,10 @@ export const DashboardSidebar = (props) => {
           })}
           {user?.isLoggedIn === true && (
             <NavItem
-              key="logout"
+              key="Logout"
               icon={<LockIcon fontSize="small" />}
               href="/api/logout"
-              title="logout"
+              title="Logout"
               onClick={async (e) => {
                 e.preventDefault();
                 mutateUser(await fetchJson("/api/logout", { method: "POST" }), false);
