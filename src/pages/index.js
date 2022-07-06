@@ -11,9 +11,13 @@ import { useEffect, useState } from "react";
 import { ASSET_CURRENCIES_INFO, SWAPPABLE_CURRENCIES } from "src/api/currencies";
 import { AccountSelector } from "../components/convert/account-selector";
 import { Estimator } from "../components/convert/estimator";
+import useUser from "../lib/useUser";
 
-function Customers(props) {
-  console.log(props);
+function Convert(props) {
+  const { user } = useUser({
+    redirectTo: "/login",
+  });
+
   const { currenciesInfo, swappableCurrencies } = props;
   const [swappableCoins, setSwappableCoins] = useState([
     { label: "BTC", logoLink: "" },
@@ -99,7 +103,7 @@ function Customers(props) {
   );
 }
 
-Customers.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;
+Convert.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;
 
 export const getServerSideProps = async (ctx) => {
   const promises = [axios.get(ASSET_CURRENCIES_INFO), axios.get(SWAPPABLE_CURRENCIES)];
@@ -107,13 +111,14 @@ export const getServerSideProps = async (ctx) => {
     const responses = await Promise.all(promises);
     return {
       props: {
-        currenciesInfo: responses[0].data.map((e) => ({ ccy: e.ccy, logoLink: e.logoLink })),
-        swappableCurrencies: responses[1].data,
+        currenciesInfo: responses[0].data.data.map((e) => ({ ccy: e.ccy, logoLink: e.logoLink })),
+        swappableCurrencies: responses[1].data.data,
       },
     };
-  } catch {
+  } catch (error) {
+    console.error(`error with fetching currencies: ${error}`);
     return { props: { currenciesInfo: [], swappableCurrencies: [] } };
   }
 };
 
-export default Customers;
+export default Convert;

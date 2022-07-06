@@ -68,8 +68,6 @@ export const DashboardSidebar = (props) => {
             <Box
               sx={{
                 alignItems: "center",
-                backgroundColor: "rgba(255, 255, 255, 0.04)",
-                cursor: "pointer",
                 display: "flex",
                 justifyContent: "space-between",
                 px: 3,
@@ -77,14 +75,9 @@ export const DashboardSidebar = (props) => {
                 borderRadius: 1,
               }}
             >
-              <div>
-                <Typography color="inherit" variant="subtitle1">
-                  Acme Inc
-                </Typography>
-                <Typography color="neutral.400" variant="body2">
-                  Your tier : Premium
-                </Typography>
-              </div>
+              <Typography color="inherit" variant="subtitle1">
+                Crypto Broker Demo
+              </Typography>
             </Box>
           </Box>
         </div>

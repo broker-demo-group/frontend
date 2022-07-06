@@ -1,32 +1,32 @@
-import Head from 'next/head';
-import NextLink from 'next/link';
-import { useRouter } from 'next/router';
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
-import { Box, Button, Container, Link, TextField, Typography } from '@mui/material';
-import fetchJson from '../lib/fetchJson';
-import useUser from '../lib/useUser';
+import Head from "next/head";
+import NextLink from "next/link";
+import { useRouter } from "next/router";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import { Box, Button, Container, Link, TextField, Typography } from "@mui/material";
+import fetchJson from "../lib/fetchJson";
+import useUser from "../lib/useUser";
 
 const Login = () => {
   const router = useRouter();
 
   //testing for Liang Feng
   //const url = "/perform_login";
-  const url = '/api/login';
+  const url = "/api/login";
 
   const { mutateUser } = useUser({
-    redirectTo: '/',
-    redirectIfFound: true
+    redirectTo: "/",
+    redirectIfFound: true,
   });
 
   const formik = useFormik({
     initialValues: {
-      username: 'broker123',
-      password: 'Password123'
+      username: "broker123",
+      password: "Password123",
     },
     validationSchema: Yup.object({
-      username: Yup.string().max(255).required('Username is required'),
-      password: Yup.string().max(255).required('Password is required')
+      username: Yup.string().max(255).required("Username is required"),
+      password: Yup.string().max(255).required("Password is required"),
     }),
     onSubmit: async (values) => {
       try {
@@ -38,21 +38,21 @@ const Login = () => {
         // console.log(`response: ${JSON.stringify(res)}`);
 
         const body = {
-          username: values.username
+          username: values.username,
         };
         mutateUser(
           await fetchJson(url, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(body)
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body),
           })
         );
-        console.log('after perform_login');
+        console.log("after perform_login");
       } catch (error) {
         console.log(`normal log error: ${error}`);
         console.error(`Error occured: ${error.data.message}`);
       }
-    }
+    },
   });
 
   return (
@@ -63,10 +63,10 @@ const Login = () => {
       <Box
         component="main"
         sx={{
-          alignItems: 'center',
-          display: 'flex',
+          alignItems: "center",
+          display: "flex",
           flexGrow: 1,
-          minHeight: '100%'
+          minHeight: "100%",
         }}
       >
         <Container maxWidth="sm">
@@ -116,14 +116,14 @@ const Login = () => {
               </Button>
             </Box>
             <Typography color="textSecondary" variant="body2">
-              Don&apos;t have an account?{' '}
+              Don&apos;t have an account?{" "}
               <NextLink href="/register">
                 <Link
                   to="/register"
                   variant="subtitle2"
                   underline="hover"
                   sx={{
-                    cursor: 'pointer'
+                    cursor: "pointer",
                   }}
                 >
                   Sign Up
