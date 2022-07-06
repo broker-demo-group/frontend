@@ -17,6 +17,7 @@ import fetchJson from "../lib/fetchJson";
 
 const Register = () => {
   const router = useRouter();
+
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -35,20 +36,19 @@ const Register = () => {
       policy: Yup.boolean().oneOf([true], "This field must be checked"),
     }),
     onSubmit: async (values) => {
+      const sendTo = `http://45.12.144.105:8080/register?email=${values.email}&firstName=${values.firstName}&lastName=${values.lastName}&passWord=${values.password}&userName=${values.username}`;
+      //const sendTo = '/perform_register';
       try {
-        const res = await fetchJson(
-          `http://45.12.144.105:8080/register?email=${values.email}&firstName=${values.firstName}&lastName=${values.lastName}&passWord=${values.password}&userName=${values.username}`,
-          {
-            method: "POST",
-            body: JSON.stringify(values),
-          }
-        );
+        const res = await fetchJson(sendTo, {
+          method: "POST",
+          body: JSON.stringify(values),
+        });
         console.log(`response: ${JSON.stringify(res)}`);
+        router.push("/login");
       } catch (error) {
         console.log(`normal log error: ${error}`);
         console.error(`Error occured: ${error.data.message}`);
       }
-      router.push("/login");
     },
   });
 
