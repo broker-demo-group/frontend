@@ -4,9 +4,8 @@ import { useRouter } from "next/router";
 import PropTypes from "prop-types";
 import { Box, Divider, Drawer, Typography, useMediaQuery } from "@mui/material";
 import { ChartBar as ChartBarIcon } from "../icons/chart-bar";
-import { Lock as LockIcon } from "../icons/lock";
-import { Selector as SelectorIcon } from "../icons/selector";
 import { User as UserIcon } from "../icons/user";
+import { XCircle as XCircleIcon } from "../icons/x-circle";
 import useUser from "../lib/useUser";
 import { Logo } from "./logo";
 import { NavItem } from "./nav-item";
@@ -17,11 +16,6 @@ const items = [
     href: "/",
     icon: <UserIcon fontSize="small" />,
     title: "Convert",
-  },
-  {
-    href: "/login",
-    icon: <LockIcon fontSize="small" />,
-    title: "Login",
   },
 ];
 
@@ -91,13 +85,6 @@ export const DashboardSidebar = (props) => {
                   Your tier : Premium
                 </Typography>
               </div>
-              <SelectorIcon
-                sx={{
-                  color: "neutral.500",
-                  width: 14,
-                  height: 14,
-                }}
-              />
             </Box>
           </Box>
         </div>
@@ -122,7 +109,7 @@ export const DashboardSidebar = (props) => {
           {user?.isLoggedIn === true && (
             <NavItem
               key="Logout"
-              icon={<LockIcon fontSize="small" />}
+              icon={<XCircleIcon fontSize="small" />}
               href="/api/logout"
               title="Logout"
               onClick={async (e) => {

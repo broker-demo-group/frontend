@@ -37,13 +37,13 @@ const Login = () => {
           username: values.username
         };
         mutateUser(
-          await fetchJson('/api/login', {
+          await fetchJson('/perform_login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(body)
           })
         );
-        console.log('after api/login');
+        console.log('after perform_login');
       } catch (error) {
         console.log(`normal log error: ${error}`);
         console.error(`Error occured: ${error.data.message}`);
