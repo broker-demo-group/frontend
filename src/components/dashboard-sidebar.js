@@ -15,11 +15,6 @@ import fetchJson from "../lib/fetchJson";
 const items = [
   {
     href: "/",
-    icon: <ChartBarIcon fontSize="small" />,
-    title: "Dashboard",
-  },
-  {
-    href: "/convert",
     icon: <UserIcon fontSize="small" />,
     title: "Convert",
   },

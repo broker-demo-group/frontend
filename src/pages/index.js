@@ -1,67 +1,119 @@
-import Head from 'next/head';
-import { Box, Container, Grid } from '@mui/material';
-import { Budget } from '../components/dashboard/budget';
-import { LatestOrders } from '../components/dashboard/latest-orders';
-import { LatestProducts } from '../components/dashboard/latest-products';
-import { Sales } from '../components/dashboard/sales';
-import { TasksProgress } from '../components/dashboard/tasks-progress';
-import { TotalCustomers } from '../components/dashboard/total-customers';
-import { TotalProfit } from '../components/dashboard/total-profit';
-import { TrafficByDevice } from '../components/dashboard/traffic-by-device';
-import { DashboardLayout } from '../components/dashboard-layout';
-import useUser from '../lib/useUser';
+import Head from "next/head";
+import { Box, Checkbox, Container, FormControlLabel, FormGroup, Typography } from "@mui/material";
+import { DashboardLayout } from "../components/dashboard-layout";
+import { FromCoinField } from "../components/convert/from-coin-field";
+import { ToCoinField } from "../components/convert/to-coin-field";
+import ConvertButton from "../components/convert/convert-button";
+import IconButton from "@mui/material/IconButton";
+import SwapVertIcon from "@mui/icons-material/SwapVert";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { ASSET_CURRENCIES_INFO, SWAPPABLE_CURRENCIES } from "src/api/currencies";
+import { AccountSelector } from "../components/convert/account-selector";
+import { Estimator } from "../components/convert/estimator";
 
-const Dashboard = () => {
-  const { user } = useUser({
-    redirectTo: '/login'
-  });
+function Customers(props) {
+  console.log(props);
+  const { currenciesInfo, swappableCurrencies } = props;
+  const [swappableCoins, setSwappableCoins] = useState([
+    { label: "BTC", logoLink: "" },
+    { label: "ETH", logoLink: "" },
+  ]);
+  const [fromCoin, setFromCoin] = useState({ label: "BTC", logoLink: "" });
+  const [toCoin, setToCoin] = useState({ label: "ETH", logoLink: "" });
+  const [availBal, setAvailBal] = useState(0);
 
-  console.log(`user is: ${JSON.stringify(user)}`);
+  useEffect(() => {
+    console.log(`swappableCurrencies: ${JSON.stringify(swappableCurrencies)}`);
+    const updatedSwappableCurrencies = swappableCurrencies.map((e) => ({
+      label: e.ccy,
+      logoLink: currenciesInfo.find((i) => e.ccy === i.ccy).logoLink,
+    }));
+    setSwappableCoins(updatedSwappableCurrencies);
+    if (updatedSwappableCurrencies.length >= 2) {
+      setFromCoin(updatedSwappableCurrencies[0]);
+      setToCoin(updatedSwappableCurrencies[1]);
+    }
+  }, []);
+
+  const swapCoins = () => {
+    const a = fromCoin;
+    const b = toCoin;
+    setFromCoin(b);
+    setToCoin(a);
+  };
+
   return (
     <>
       <Head>
-        <title>Dashboard | Broker Demo Account</title>
+        <title>Convert</title>
       </Head>
       <Box
         component="main"
         sx={{
           flexGrow: 1,
-          py: 8
+          py: 8,
         }}
       >
         <Container maxWidth={false}>
-          <Grid container spacing={3}>
-            <Grid item lg={3} sm={6} xl={3} xs={12}>
-              <Budget />
-            </Grid>
-            <Grid item xl={3} lg={3} sm={6} xs={12}>
-              <TotalCustomers />
-            </Grid>
-            <Grid item xl={3} lg={3} sm={6} xs={12}>
-              <TasksProgress />
-            </Grid>
-            <Grid item xl={3} lg={3} sm={6} xs={12}>
-              <TotalProfit sx={{ height: '100%' }} />
-            </Grid>
-            <Grid item lg={8} md={12} xl={9} xs={12}>
-              <Sales />
-            </Grid>
-            <Grid item lg={4} md={6} xl={3} xs={12}>
-              <TrafficByDevice sx={{ height: '100%' }} />
-            </Grid>
-            <Grid item lg={4} md={6} xl={3} xs={12}>
-              <LatestProducts sx={{ height: '100%' }} />
-            </Grid>
-            <Grid item lg={8} md={12} xl={9} xs={12}>
-              <LatestOrders />
-            </Grid>
-          </Grid>
+          <Box
+            component="main"
+            sx={{
+              alignItems: "center",
+              display: "flex",
+              flexGrow: 1,
+              minHeight: "100%",
+            }}
+          >
+            <Container maxWidth="sm">
+              <FromCoinField
+                coinSelected={fromCoin}
+                availBal={availBal}
+                swappableCoins={swappableCoins}
+                onSelectNewCoin={setFromCoin}
+              />
+              <AccountSelector
+                balance={availBal}
+                fromCoinLabel={fromCoin.label}
+                setAvailBal={setAvailBal}
+              />
+              <Box height={16} />
+              <Box sx={{ display: "flex", justifyContent: "center" }}>
+                <IconButton aria-label="switch-currencies" onClick={swapCoins}>
+                  <SwapVertIcon />
+                </IconButton>
+              </Box>
+              <ToCoinField
+                coinSelected={toCoin}
+                swappableCoins={swappableCoins}
+                onSelectNewCoin={setToCoin}
+              />
+              <Estimator fromCoinLabel={fromCoin.label} toCoinLabel={toCoin.label} />
+              <Box height={16} />
+              <ConvertButton handleConfirmCallback={() => {}} handleCancelCallback={() => {}} />
+            </Container>
+          </Box>
         </Container>
       </Box>
     </>
   );
+}
+
+Customers.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;
+
+export const getServerSideProps = async (ctx) => {
+  const promises = [axios.get(ASSET_CURRENCIES_INFO), axios.get(SWAPPABLE_CURRENCIES)];
+  try {
+    const responses = await Promise.all(promises);
+    return {
+      props: {
+        currenciesInfo: responses[0].data.map((e) => ({ ccy: e.ccy, logoLink: e.logoLink })),
+        swappableCurrencies: responses[1].data,
+      },
+    };
+  } catch {
+    return { props: { currenciesInfo: [], swappableCurrencies: [] } };
+  }
 };
 
-Dashboard.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;
-
-export default Dashboard;
+export default Customers;
