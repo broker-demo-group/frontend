@@ -19,13 +19,17 @@ yarn dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-## Dashboard Page
+## Registration Page
 
-![Screenshot 2022-07-05 at 11 27 34 AM](https://user-images.githubusercontent.com/62011351/177244232-6b38a966-bc2a-4ceb-a52b-ae31fe156896.png)
+![Screenshot 2022-07-06 at 2 04 18 PM](https://user-images.githubusercontent.com/62011351/177480106-086c24c3-a0a5-4c52-9a52-b775b0933c60.png)
 
 ## Login Page
 
-![Screenshot 2022-07-05 at 11 31 10 AM](https://user-images.githubusercontent.com/62011351/177244318-8b526585-fe3a-4cc5-8ae7-e6a7efc2f614.png)
+![Screenshot 2022-07-06 at 2 02 09 PM](https://user-images.githubusercontent.com/62011351/177479907-060e2e0c-2caf-4b82-8f9d-bf402f1adb53.png)
+
+## Dashboard Page
+
+![Screenshot 2022-07-06 at 2 05 48 PM](https://user-images.githubusercontent.com/62011351/177480271-945945d0-06d7-4783-a3dd-3adeb195b1f9.png)
 
 ## Crypto Convert Page
 
