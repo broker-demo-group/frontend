@@ -10,6 +10,10 @@ import useUser from '../lib/useUser';
 const Login = () => {
   const router = useRouter();
 
+  //testing for Liang Feng
+  //const url = "/perform_login";
+  const url = '/api/login';
+
   const { mutateUser } = useUser({
     redirectTo: '/',
     redirectIfFound: true
@@ -37,7 +41,7 @@ const Login = () => {
           username: values.username
         };
         mutateUser(
-          await fetchJson('/perform_login', {
+          await fetchJson(url, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(body)
