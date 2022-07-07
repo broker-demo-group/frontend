@@ -30,7 +30,7 @@ const Login = () => {
     }),
     onSubmit: async (values) => {
       try {
-        const formData = new FormData(values);
+        const formData = new FormData();
         formData.append("userName", values.username);
         formData.append("passWord", values.password);
         const res = await fetchJson("http://45.12.144.105:8080/api/perform_login", {
