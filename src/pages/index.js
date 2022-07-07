@@ -28,7 +28,6 @@ function Convert(props) {
   const [availBal, setAvailBal] = useState(0);
 
   useEffect(() => {
-    console.log(`swappableCurrencies: ${JSON.stringify(swappableCurrencies)}`);
     const updatedSwappableCurrencies = swappableCurrencies.map((e) => ({
       label: e.ccy,
       logoLink: currenciesInfo.find((i) => e.ccy === i.ccy).logoLink,

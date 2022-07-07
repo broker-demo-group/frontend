@@ -1,18 +1,14 @@
 import { useEffect, useState } from "react";
 import { Checkbox, FormControlLabel, FormGroup } from "@mui/material";
-import Typography from "@mui/material/Typography";
 import axios from "axios";
+import Typography from "@mui/material/Typography";
 import { ESTIMATE_QUOTE } from "src/api/convert";
 
 function estimateQuoteBody(fromCoin, toCoin) {
-  console.log(fromCoin);
-  console.log(toCoin);
   return {
-    baseCcy: fromCoin,
-    quoteCcy: toCoin,
-    side: "buy",
-    rfqSz: "1",
-    rfqSzCcy: toCoin,
+    amount: "1",
+    fromCcy: toCoin,
+    toCcy: fromCoin,
   };
 }
 
@@ -21,20 +17,23 @@ export const Estimator = (props) => {
   const [ratio, setRatio] = useState(-1);
 
   useEffect(() => {
-    fetch(ESTIMATE_QUOTE, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(estimateQuoteBody(fromCoinLabel, toCoinLabel)),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log("Success!");
-        console.log(data);
+    console.log(ESTIMATE_QUOTE);
+    axios
+      .post(ESTIMATE_QUOTE, estimateQuoteBody(fromCoinLabel, toCoinLabel))
+      .then((res) => {
+        const dataOutput = JSON.parse(res.data.data);
+        console.log();
+        console.log(dataOutput);
+        console.log(dataOutput.quoteSz);
+        if (res.code === 0) {
+          setRatio(res.data.quoteSz);
+        } else {
+          setRatio("error ");
+        }
       })
       .catch((err) => {
-        console.log(`Error: ${err}`);
+        console.log(`error at estimate quote: ${err}`);
+        setRatio("error ");
       });
   }, [fromCoinLabel]);
 
