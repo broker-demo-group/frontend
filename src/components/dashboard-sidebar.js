@@ -1,31 +1,36 @@
-import { useEffect } from "react";
-import NextLink from "next/link";
-import { useRouter } from "next/router";
-import PropTypes from "prop-types";
-import { Box, Divider, Drawer, Typography, useMediaQuery } from "@mui/material";
-import { ChartBar as ChartBarIcon } from "../icons/chart-bar";
-import { User as UserIcon } from "../icons/user";
-import { XCircle as XCircleIcon } from "../icons/x-circle";
-import useUser from "../lib/useUser";
-import { Logo } from "./logo";
-import { NavItem } from "./nav-item";
-import fetchJson from "../lib/fetchJson";
+import { useEffect } from 'react';
+import NextLink from 'next/link';
+import { useRouter } from 'next/router';
+import PropTypes from 'prop-types';
+import { Box, Divider, Drawer, Typography, useMediaQuery } from '@mui/material';
+import { User as UserIcon } from '../icons/user';
+import { XCircle as XCircleIcon } from '../icons/x-circle';
+import useUser from '../lib/useUser';
+import { Logo } from './logo';
+import { NavItem } from './nav-item';
+import fetchJson from '../lib/fetchJson';
 
 const items = [
   {
-    href: "/",
-    icon: <UserIcon fontSize="small" />,
-    title: "Convert",
+    href: '/',
+    icon: <UserIcon fontSize="small"/>,
+    title: 'Convert'
   },
+  //must comment out if need to do automatic route to login page
+  {
+    href: '/login',
+    icon: <XCircleIcon fontSize="small"/>,
+    title: 'Logout'
+  }
 ];
 
 export const DashboardSidebar = (props) => {
   const { open, onClose } = props;
   const { user, mutateUser } = useUser();
   const router = useRouter();
-  const lgUp = useMediaQuery((theme) => theme.breakpoints.up("lg"), {
+  const lgUp = useMediaQuery((theme) => theme.breakpoints.up('lg'), {
     defaultMatches: true,
-    noSsr: false,
+    noSsr: false
   });
 
   useEffect(
@@ -46,9 +51,9 @@ export const DashboardSidebar = (props) => {
     <>
       <Box
         sx={{
-          display: "flex",
-          flexDirection: "column",
-          height: "100%",
+          display: 'flex',
+          flexDirection: 'column',
+          height: '100%'
         }}
       >
         <div>
@@ -58,7 +63,7 @@ export const DashboardSidebar = (props) => {
                 <Logo
                   sx={{
                     height: 42,
-                    width: 42,
+                    width: 42
                   }}
                 />
               </a>
@@ -67,12 +72,12 @@ export const DashboardSidebar = (props) => {
           <Box sx={{ px: 2 }}>
             <Box
               sx={{
-                alignItems: "center",
-                display: "flex",
-                justifyContent: "space-between",
+                alignItems: 'center',
+                display: 'flex',
+                justifyContent: 'space-between',
                 px: 3,
-                py: "11px",
-                borderRadius: 1,
+                py: '11px',
+                borderRadius: 1
               }}
             >
               <Typography color="inherit" variant="subtitle1">
@@ -83,8 +88,8 @@ export const DashboardSidebar = (props) => {
         </div>
         <Divider
           sx={{
-            borderColor: "#2D3748",
-            my: 3,
+            borderColor: '#2D3748',
+            my: 3
           }}
         />
         <Box sx={{ flexGrow: 1 }}>
@@ -102,18 +107,18 @@ export const DashboardSidebar = (props) => {
           {user?.isLoggedIn === true && (
             <NavItem
               key="Logout"
-              icon={<XCircleIcon fontSize="small" />}
+              icon={<XCircleIcon fontSize="small"/>}
               href="/api/logout"
               title="Logout"
               onClick={async (e) => {
                 e.preventDefault();
-                mutateUser(await fetchJson("/api/logout", { method: "POST" }), false);
-                router.push("/login");
+                mutateUser(await fetchJson('/api/logout', { method: 'POST' }), false);
+                router.push('/login');
               }}
             />
           )}
         </Box>
-        <Divider sx={{ borderColor: "#2D3748" }} />
+        <Divider sx={{ borderColor: '#2D3748' }}/>
       </Box>
     </>
   );
@@ -125,10 +130,10 @@ export const DashboardSidebar = (props) => {
         open
         PaperProps={{
           sx: {
-            backgroundColor: "neutral.900",
-            color: "#FFFFFF",
-            width: 280,
-          },
+            backgroundColor: 'neutral.900',
+            color: '#FFFFFF',
+            width: 280
+          }
         }}
         variant="permanent"
       >
@@ -144,10 +149,10 @@ export const DashboardSidebar = (props) => {
       open={open}
       PaperProps={{
         sx: {
-          backgroundColor: "neutral.900",
-          color: "#FFFFFF",
-          width: 280,
-        },
+          backgroundColor: 'neutral.900',
+          color: '#FFFFFF',
+          width: 280
+        }
       }}
       sx={{ zIndex: (theme) => theme.zIndex.appBar + 100 }}
       variant="temporary"
@@ -159,5 +164,5 @@ export const DashboardSidebar = (props) => {
 
 DashboardSidebar.propTypes = {
   onClose: PropTypes.func,
-  open: PropTypes.bool,
+  open: PropTypes.bool
 };
