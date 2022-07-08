@@ -12,6 +12,7 @@ const Login = () => {
 
   //testing for Liang Feng
   const url = '/api/login';
+  //const url = '/perform_login';
   //const url = 'http://45.12.144.105:8080/api/perform_login';
   const { mutateUser } = useUser({
     redirectTo: '/',
@@ -20,8 +21,8 @@ const Login = () => {
 
   const formik = useFormik({
     initialValues: {
-      username: 'broker123',
-      password: 'Password123'
+      username: '',
+      password: ''
     },
     validationSchema: Yup.object({
       username: Yup.string().max(255).required('Username is required'),
