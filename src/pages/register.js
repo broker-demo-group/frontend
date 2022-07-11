@@ -36,7 +36,7 @@ const Register = () => {
       policy: Yup.boolean().oneOf([true], "This field must be checked"),
     }),
     onSubmit: async (values) => {
-      const sendTo = `http://45.12.144.105:8080/register?email=${values.email}&firstName=${values.firstName}&lastName=${values.lastName}&passWord=${values.password}&userName=${values.username}`;
+      const sendTo = `https://broker.tinykittens.dev/backendservice/register?email=${values.email}&firstName=${values.firstName}&lastName=${values.lastName}&passWord=${values.password}&userName=${values.username}`;
       //const sendTo = '/perform_register';
       try {
         const res = await fetchJson(sendTo, {

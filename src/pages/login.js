@@ -13,7 +13,7 @@ const Login = () => {
   //testing for Liang Feng
   //const url = '/api/login';
   //const url = '/perform_login';
-  const url = 'http://45.12.144.105:8080/api/rest_login';
+  const url = './backendservice/restlogin';
   const { mutateUser } = useUser({
     redirectTo: '/',
     redirectIfFound: true
@@ -41,7 +41,8 @@ const Login = () => {
         console.log(`response: ${JSON.stringify(res)}`);
 
         const body = {
-          username: values.username
+          username: values.username,
+          password: values.password
         };
         mutateUser(
           await fetchJson(url, {
