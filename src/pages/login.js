@@ -11,9 +11,9 @@ const Login = () => {
   const router = useRouter();
 
   //testing for Liang Feng
-  const url = '/api/login';
+  //const url = '/api/login';
   //const url = '/perform_login';
-  //const url = 'http://45.12.144.105:8080/api/perform_login';
+  const url = 'http://45.12.144.105:8080/api/rest_login';
   const { mutateUser } = useUser({
     redirectTo: '/',
     redirectIfFound: true
