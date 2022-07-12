@@ -1,62 +1,70 @@
-import Head from 'next/head';
-import NextLink from 'next/link';
-import { useRouter } from 'next/router';
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
-import { Box, Button, Container, Link, TextField, Typography } from '@mui/material';
-import fetchJson from '../lib/fetchJson';
-import useUser from '../lib/useUser';
+import { useEffect } from 'react';
+import Head from "next/head";
+import NextLink from "next/link";
+import { useRouter } from "next/router";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import {
+  Box,
+  Button,
+  Container,
+  Link,
+  TextField,
+  Typography,
+} from "@mui/material";
+import fetchJson from "../lib/fetchJson";
+import useUser from "../lib/useUser";
 
 const Login = () => {
   const router = useRouter();
-
-  //testing for Liang Feng
-  //const url = '/api/login';
-  //const url = '/perform_login';
-  const url = './backendservice/restlogin';
-  const { mutateUser } = useUser({
-    redirectTo: '/',
-    redirectIfFound: true
-  });
+  const url = "./backendservice/restlogin";
+  
+  useEffect(() => {
+    fetch("/backendservice/dashboard")
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        if (data.status == "success") {
+          console.log("success");
+          router.push("/");
+        }
+      });
+  }, []);
 
   const formik = useFormik({
     initialValues: {
-      username: '',
-      password: ''
+      username: "",
+      password: "",
     },
     validationSchema: Yup.object({
-      username: Yup.string().max(255).required('Username is required'),
-      password: Yup.string().max(255).required('Password is required')
+      username: Yup.string().max(255).required("Username is required"),
+      password: Yup.string().max(255).required("Password is required"),
     }),
     onSubmit: async (values) => {
       try {
-        const formData = new FormData();
-        formData.append('userName', values.username);
-        formData.append('passWord', values.password);
-        const res = await fetchJson(url, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-          body: formData
-        });
-        console.log(`response: ${JSON.stringify(res)}`);
-
         const body = {
           username: values.username,
-          password: values.password
+          password: values.password,
         };
-        mutateUser(
-          await fetchJson(url, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(body)
-          })
-        );
-        console.log('after perform_login');
+
+        const result = await fetchJson(url, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+        });
+
+        if (result.status == "success") {
+          router.push("/");
+          console.log("success");
+        } else {
+          console.log("not success");
+        }
+        console.log("after perform_login");
       } catch (error) {
         console.log(`normal log error: ${error}`);
         console.error(`Error occured: ${error.data.message}`);
       }
-    }
+    },
   });
 
   return (
@@ -67,10 +75,10 @@ const Login = () => {
       <Box
         component="main"
         sx={{
-          alignItems: 'center',
-          display: 'flex',
+          alignItems: "center",
+          display: "flex",
           flexGrow: 1,
-          minHeight: '100%'
+          minHeight: "100%",
         }}
       >
         <Container maxWidth="sm">
@@ -120,14 +128,14 @@ const Login = () => {
               </Button>
             </Box>
             <Typography color="textSecondary" variant="body2">
-              Don&apos;t have an account?{' '}
+              Don&apos;t have an account?{" "}
               <NextLink href="/register">
                 <Link
                   to="/register"
                   variant="subtitle2"
                   underline="hover"
                   sx={{
-                    cursor: 'pointer'
+                    cursor: "pointer",
                   }}
                 >
                   Sign Up

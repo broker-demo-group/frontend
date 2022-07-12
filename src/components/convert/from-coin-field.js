@@ -1,9 +1,25 @@
-import { Autocomplete, Box, Input, InputAdornment, TextField, Typography } from "@mui/material";
+import {
+  Autocomplete,
+  Button,
+  Box,
+  Input,
+  InputAdornment,
+  TextField,
+  Typography,
+} from "@mui/material";
 
 const ariaLabel = { "aria-label": "fromCurrency" };
 
 export const FromCoinField = (props) => {
-  const { availBal, coinSelected, swappableCoins, onSelectNewCoin } = props;
+  const {
+    availBal,
+    coinSelected,
+    swappableCoins,
+    onSelectNewCoin,
+    ratio,
+    onSetNewValue,
+    value,
+  } = props;
   return (
     <Box>
       <Typography variant="body2">From</Typography>
@@ -16,7 +32,13 @@ export const FromCoinField = (props) => {
           border: "1px solid grey",
         }}
       >
-        <Input error={true} placeholder="0.00000" inputProps={ariaLabel} disableUnderline={true} />
+        <Input
+          value={value}
+          placeholder="0.00000"
+          inputProps={ariaLabel}
+          disableUnderline={true}
+          onChange={(event) => onSetNewValue(event.target.value)}
+        />
         <Box
           sx={{
             display: "flex",
@@ -25,17 +47,33 @@ export const FromCoinField = (props) => {
             justifyContent: "flex-end",
           }}
         >
-          <Typography variant="button" align="right">
-            Max
-          </Typography>
+          <Button
+            disableFocusRipple
+            disableRipple
+            sx={{
+              "&:hover": {
+                backgroundColor: "transparent",
+              },
+            }}
+            variant="text"
+            onClick={() => onSetNewValue(availBal)}
+          >
+            MAX
+          </Button>
+
           <Typography sx={{ marginX: 1 }}>|</Typography>
 
           <Autocomplete
             disablePortal
+            disableClearable
             id="combo-box-demo"
             options={swappableCoins}
             renderOption={(props, option) => (
-              <Box component="li" sx={{ "& > img": { mr: 2, flexShrink: 0 } }} {...props}>
+              <Box
+                component="li"
+                sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
+                {...props}
+              >
                 <img loading="lazy" width="20" src={option.logoLink} alt="" />
                 {option.label}
               </Box>
@@ -45,7 +83,12 @@ export const FromCoinField = (props) => {
             renderInput={(params) => {
               params.InputProps.startAdornment = (
                 <InputAdornment position="start">
-                  <img loading="lazy" width="20" src={coinSelected.logoLink} alt="" />
+                  <img
+                    loading="lazy"
+                    width="20"
+                    src={coinSelected.logoLink}
+                    alt=""
+                  />
                 </InputAdornment>
               );
               return <TextField {...params} />;

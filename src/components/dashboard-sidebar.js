@@ -9,6 +9,7 @@ import useUser from '../lib/useUser';
 import { Logo } from './logo';
 import { NavItem } from './nav-item';
 import fetchJson from '../lib/fetchJson';
+import axios from 'axios';
 
 const items = [
   {
@@ -17,16 +18,16 @@ const items = [
     title: 'Convert'
   },
   //must comment out if need to do automatic route to login page
-  {
-    href: '/login',
-    icon: <XCircleIcon fontSize="small"/>,
-    title: 'Logout'
-  }
+//   {
+//     href: '/login',
+//     icon: <XCircleIcon fontSize="small"/>,
+//     title: 'Logout'
+//   }
 ];
 
 export const DashboardSidebar = (props) => {
   const { open, onClose } = props;
-  const { user, mutateUser } = useUser();
+//   const { user, mutateUser } = useUser();
   const router = useRouter();
   const lgUp = useMediaQuery((theme) => theme.breakpoints.up('lg'), {
     defaultMatches: true,
@@ -104,19 +105,23 @@ export const DashboardSidebar = (props) => {
               />
             );
           })}
-          {user?.isLoggedIn === true && (
             <NavItem
               key="Logout"
               icon={<XCircleIcon fontSize="small"/>}
-              href="/api/logout"
+              href="/login"
               title="Logout"
               onClick={async (e) => {
                 e.preventDefault();
-                mutateUser(await fetchJson('/api/logout', { method: 'POST' }), false);
+                fetch('/backendservice/logout', {method: 'POST'})
+                    .then(res => res.json())
+                    .then(e => console.log(`logout: ${e}`)).catch(e => console.log(`logout error: ${e}`));
+                fetchJson('/backendservice/logout', {method: 'POST'}).then(e => console.log(`logout: ${e}`)).catch(e => console.log(`logout error: ${e}`));
+                // axios.post('/logout').then(res => console.log(`logout res: ${res}`)).catch(err => console.log(`error logout: ${err}`));
+                // mutateUser(await fetchJson('/api/logout', { method: 'POST' }), false);
                 router.push('/login');
               }}
             />
-          )}
+
         </Box>
         <Divider sx={{ borderColor: '#2D3748' }}/>
       </Box>

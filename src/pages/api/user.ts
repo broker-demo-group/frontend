@@ -20,7 +20,7 @@ async function userRoute(req: NextApiRequest, res: NextApiResponse<User>) {
     });
   } else {
     res.json({
-      isLoggedIn: false,
+      isLoggedIn: true,
       login: '',
     });
   }

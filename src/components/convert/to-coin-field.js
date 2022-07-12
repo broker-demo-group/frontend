@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Autocomplete, Box, Input, InputAdornment, TextField, Typography } from "@mui/material";
 
 const ariaLabel = { "aria-label": "fromCurrency" };
@@ -5,8 +6,12 @@ const ariaLabel = { "aria-label": "fromCurrency" };
 const swappableCoins = [{ label: "BTC" }, { label: "ETH" }];
 
 export const ToCoinField = (props) => {
-  const { coinSelected, swappableCoins, onSelectNewCoin } = props;
-
+  const { coinSelected, swappableCoins, onSelectNewCoin, ratio, onSetNewValue, value, fromValue } = props;
+    
+  useEffect(() => {
+     onSetNewValue(fromValue / ratio);
+  }, [ratio, fromValue, onSetNewValue]);
+    
   return (
     <Box>
       <Typography variant="body2">To</Typography>
@@ -19,7 +24,7 @@ export const ToCoinField = (props) => {
           border: "1px solid grey",
         }}
       >
-        <Input placeholder="0.00000" inputProps={ariaLabel} disableUnderline={true} />
+        <Input value={value} placeholder="0.00000" inputProps={ariaLabel} disableUnderline={true} onChange={(event) => onSetNewValue(event.target.value)} />
         <Box
           sx={{
             display: "flex",
@@ -30,6 +35,7 @@ export const ToCoinField = (props) => {
         >
           <Autocomplete
             disablePortal
+            disableClearable
             id="combo-box-demo"
             options={swappableCoins}
             renderOption={(props, option) => (
