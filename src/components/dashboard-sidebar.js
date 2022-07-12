@@ -15,13 +15,13 @@ const items = [
     href: '/',
     icon: <UserIcon fontSize="small"/>,
     title: 'Convert'
-  },
+  }
   //must comment out if need to do automatic route to login page
-  {
+  /*{
     href: '/login',
     icon: <XCircleIcon fontSize="small"/>,
     title: 'Logout'
-  }
+  }*/
 ];
 
 export const DashboardSidebar = (props) => {
