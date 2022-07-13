@@ -23,9 +23,7 @@ const Login = () => {
     fetch("/backendservice/dashboard")
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
-        if (data.status == "success") {
-          console.log("success");
+        if (data.status === "success") {
           router.push("/");
         }
       });
@@ -82,9 +80,16 @@ const Login = () => {
         }}
       >
         <Container maxWidth="sm">
+          <Box sx={{ display: "flex" }}>
+            <Typography 
+              gutterBottom
+              variant="h3">
+                Welcome to Broker Demo.
+            </Typography>
+          </Box>
           <form onSubmit={formik.handleSubmit}>
             <Box sx={{ my: 3 }}>
-              <Typography color="textPrimary" variant="h4">
+              <Typography color="textPrimary" variant="h5">
                 Sign in
               </Typography>
             </Box>
@@ -124,7 +129,7 @@ const Login = () => {
                 type="submit"
                 variant="contained"
               >
-                Sign In Now
+                Login
               </Button>
             </Box>
             <Typography color="textSecondary" variant="body2">

@@ -7,7 +7,7 @@ import ConvertButton from "../components/convert/convert-button";
 import IconButton from "@mui/material/IconButton";
 import SwapVertIcon from "@mui/icons-material/SwapVert";
 import axios from "axios";
-import { useEffect, useState, useReducer } from "react";
+import { useEffect, useState } from "react";
 import {
   ASSET_CURRENCIES_INFO,
   SWAPPABLE_CURRENCIES,
@@ -23,7 +23,6 @@ function Convert(props) {
   ]);
   const [currenciesInfo, setCurrenciesInfo] = useState([]);
   const [swappableCurrencies, setSwappableCurrencies] = useState([]);
-  const [, forceUpdate] = useReducer(x => x + 1, 0);
   const [fromCoin, setFromCoin] = useState({ label: "BTC", logoLink: "" });
   const [toCoin, setToCoin] = useState({ label: "ETH", logoLink: "" });
   const [fundingBal, setFundingBal] = useState(0);
@@ -142,9 +141,7 @@ function Convert(props) {
               />
               <Box height={16} />
               <ConvertButton
-                handleConfirmCallback={() => {
-                    forceUpdate();
-                }}
+                handleConfirmCallback={() => {}}
                 handleCancelCallback={() => {}}
                 amount={fromCoinValue}
                 from={fromCoin.label}

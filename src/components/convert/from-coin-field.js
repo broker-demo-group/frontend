@@ -48,13 +48,6 @@ export const FromCoinField = (props) => {
           }}
         >
           <Button
-            disableFocusRipple
-            disableRipple
-            sx={{
-              "&:hover": {
-                backgroundColor: "transparent",
-              },
-            }}
             variant="text"
             onClick={() => onSetNewValue(availBal)}
           >

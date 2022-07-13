@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Box } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import { useRouter } from "next/router";
 import { DashboardNavbar } from "./dashboard-navbar";
 import { DashboardSidebar } from "./dashboard-sidebar";
 
@@ -17,6 +18,17 @@ const DashboardLayoutRoot = styled("div")(({ theme }) => ({
 export const DashboardLayout = (props) => {
   const { children } = props;
   const [isSidebarOpen, setSidebarOpen] = useState(true);
+  const router = useRouter();
+  
+  useEffect(() => {
+    fetch("/backendservice/dashboard")
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.status !== "success") {
+          router.push("/login");
+        }
+      });
+  }, []);
 
   return (
     <>

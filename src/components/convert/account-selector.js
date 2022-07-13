@@ -11,9 +11,8 @@ export const AccountSelector = (props) => {
       useTradingBal, setUseTradingBal, fundingBal, setFundingBal,
       tradingBal, setTradingBal
   } = props;
-    
-  useEffect(() => {
-    //   console.log(`getting balance from: ${getCcyBalance(fromCoinLabel)}`);
+  
+  const updateBalance = () => {
     axios
       .get(getCcyBalance(fromCoinLabel))
       .then((res) => {
@@ -24,8 +23,20 @@ export const AccountSelector = (props) => {
       })
       .catch((err) => {
         console.error(`error with getting balance: ${err}`);
-      });
+    });
+  };
+    
+  useEffect(() => {
+    updateBalance();
   }, [fromCoinLabel]);
+  
+  useEffect(() => {
+    updateBalance();
+    const interval = setInterval(() => {
+      updateBalance();
+    }, 10000);
+    return () => clearInterval(interval);
+  }, []);
   
   
   const stringFundBal = numberShortener(fundingBal);
