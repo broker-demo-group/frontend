@@ -1,7 +1,4 @@
 ## Broker DEMO Project
-
-Disclaimer: The template is taken from Material-Kit React and edited. (https://github.com/devias-io/material-kit-react)
-
 ## Getting Started
 
 First:
@@ -34,3 +31,5 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 ## Learn More
 
 At the side bar, users can choose to login with their account using username and password. The website will remember this user and stay logged in even though the website tab is closed. Whenever the user remain logged in, Login page will be redirected to Crypto Convert Page. The Login page will appear only if user click Logout at the side bar.
+
+Disclaimer: The template is taken from Material-Kit React and edited. (https://github.com/devias-io/material-kit-react)
