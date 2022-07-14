@@ -11,8 +11,8 @@ export const ToCoinField = (props) => {
     ratio,
     setToCoinValue: onSetNewValue,
     setToCoin: onSelectNewCoin,
-    value,
-    fromValue,
+    toCoinValue: value,
+    fromCoinValue: fromValue,
   } = useContext(ConvertContext);
 
   useEffect(() => {

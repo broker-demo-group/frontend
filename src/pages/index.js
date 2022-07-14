@@ -30,6 +30,8 @@ function Convert(props) {
   const [toCoinValue, setToCoinValue] = useState(0);
   const [ratio, setRatio] = useState(0);
 
+  console.log(ratio);
+
   const updateBalance = useCallback(() => {
     axios
       .get(getCcyBalance(fromCoin.label))
@@ -144,7 +146,7 @@ function Convert(props) {
               <Box height={16} />
               <ConvertButton
                 handleConfirmCallback={() => {
-                  setTimeout(updateBalance, 3000);
+                  setTimeout(updateBalance, 2000);
                 }}
                 handleCancelCallback={() => {}}
               />

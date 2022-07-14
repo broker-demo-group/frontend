@@ -17,10 +17,10 @@ export const FromCoinField = (props) => {
     availBal,
     fromCoin: coinSelected,
     swappableCoins,
+    setFromCoinValue: onSetNewValue,
     setFromCoin: onSelectNewCoin,
     ratio,
-    onSetNewValue,
-    value,
+    fromCoinValue: value,
   } = useContext(ConvertContext);
   return (
     <Box>

@@ -5,7 +5,7 @@ import { ESTIMATE_QUOTE } from "src/api/convert";
 import { numberShortener } from "../../lib/numberShortener";
 import ConvertContext from "../convert/context";
 
-function estimateQuoteBody(fromCoin, toCoin, amount = 1) {
+function estimateQuoteBody(fromCoin, toCoin, amount = 0.01) {
   return {
     amount: amount === 0 ? 0.01 : amount,
     fromCcy: fromCoin,
@@ -16,7 +16,7 @@ function estimateQuoteBody(fromCoin, toCoin, amount = 1) {
 export const Estimator = (props) => {
   // const { fromCoinLabel, toCoinLabel, estimateQuoteCallback, fromCoinAmount = 1 } = props;
   const {
-    fromCoinAmount,
+    fromCoinValue: fromCoinAmount,
     fromCoin,
     toCoin,
     setRatio: estimateQuoteCallback,
