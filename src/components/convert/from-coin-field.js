@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useState, useContext, useCallback, useEffect } from "react";
 import {
   Autocomplete,
   Button,
@@ -20,26 +20,58 @@ export const FromCoinField = (props) => {
     setFromCoinValue: onSetNewValue,
     setFromCoin: onSelectNewCoin,
     ratio,
-    fromCoinValue: value,
+    fromCoinValue: stringValue,
+    coinLimits,
   } = useContext(ConvertContext);
+
+  const [isWithinLimits, setIsWithinLimits] = useState(true);
+  const [isWithinAvailBal, setIsWithinAvailBal] = useState(true);
+  const [minRequired, setMinRequired] = useState(0);
+  const [maxRequired, setMaxRequired] = useState(99999);
+
+  useEffect(() => {
+    const c = coinLimits.filter((coin) => coin.ccy === coinSelected.label);
+    if (c.length !== 0 && c[0].min !== undefined && c[0].max !== undefined) {
+      setMinRequired(c[0].min);
+      setMaxRequired(c[0].max);
+    } else {
+      setMinRequired(0);
+      setMaxRequired(99999);
+    }
+  }, [coinSelected, coinLimits]);
+
+  const inputOnChange = useCallback(
+    (event) => {
+      onSetNewValue(event.target.value);
+      const num = Number(event.target.value);
+      if (Number.isFinite(num)) {
+        const isWithinLimits = num >= minRequired && num <= maxRequired;
+        setIsWithinLimits(isWithinLimits);
+        const isWithinBal = num <= availBal;
+        setIsWithinAvailBal(isWithinBal);
+      }
+    },
+    [onSetNewValue, minRequired, maxRequired, availBal]
+  );
+
   return (
     <Box>
       <Typography variant="body2">From</Typography>
       <Box
+        border={`1px solid ${isWithinLimits ? "grey" : "red"}`}
         sx={{
           display: "flex",
           flexDirection: "row",
           p: 2,
           justifyContent: "space-between",
-          border: "1px solid grey",
         }}
       >
         <Input
-          value={value}
+          value={stringValue}
           placeholder="0.00000"
           inputProps={ariaLabel}
           disableUnderline={true}
-          onChange={(event) => onSetNewValue(event.target.value)}
+          onChange={inputOnChange}
         />
         <Box
           sx={{
@@ -79,6 +111,18 @@ export const FromCoinField = (props) => {
             onChange={(event, value) => onSelectNewCoin(value)}
           />
         </Box>
+      </Box>
+      <Box sx={{ display: "flex", flexDirection: "column" }}>
+        {!isWithinLimits && (
+          <Typography gutterBottom variant="caption" color="red">
+            Quantity needs to be between {minRequired} and {maxRequired}
+          </Typography>
+        )}
+        {!isWithinAvailBal && (
+          <Typography gutterBottom variant="caption" color="red">
+            Insufficient balance
+          </Typography>
+        )}
       </Box>
     </Box>
   );

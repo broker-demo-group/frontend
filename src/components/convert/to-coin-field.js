@@ -16,7 +16,10 @@ export const ToCoinField = (props) => {
   } = useContext(ConvertContext);
 
   useEffect(() => {
-    onSetNewValue(fromValue / ratio);
+    const toUpdate = fromValue / ratio;
+    if (Number.isFinite(toUpdate)) {
+      onSetNewValue(toUpdate);
+    }
   }, [ratio, fromValue, onSetNewValue]);
 
   return (

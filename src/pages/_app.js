@@ -9,6 +9,7 @@ import { createEmotionCache } from "../utils/create-emotion-cache";
 import { theme } from "../theme";
 import fetchJson from "../lib/fetchJson";
 import { AUTH_TOKEN, IS_DEV } from "../api/constants";
+import axiosRetry from "axios-retry";
 import axios from "axios";
 
 if (IS_DEV) {
@@ -18,6 +19,12 @@ if (IS_DEV) {
 }
 
 const clientSideEmotionCache = createEmotionCache();
+
+axiosRetry(axios, {
+  retries: 3,
+  retryDelay: () => 2000,
+  onRetry: (retryCount) => console.log(`retryCount: ${retryCount}`),
+});
 
 const App = (props) => {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;

@@ -20,17 +20,16 @@ function Convert(props) {
     { label: "BTC", logoLink: "" },
     { label: "ETH", logoLink: "" },
   ]);
+  const [coinLimits, setCoinLimits] = useState([]);
   const [fromCoin, setFromCoin] = useState({ label: "BTC", logoLink: "" });
   const [toCoin, setToCoin] = useState({ label: "ETH", logoLink: "" });
   const [fundingBal, setFundingBal] = useState(0);
   const [tradingBal, setTradingBal] = useState(0);
   const [useFundingBal, setUseFundingBal] = useState(true);
   const [useTradingBal, setUseTradingBal] = useState(false);
-  const [fromCoinValue, setFromCoinValue] = useState(0);
-  const [toCoinValue, setToCoinValue] = useState(0);
+  const [fromCoinValue, setFromCoinValue] = useState("0");
+  const [toCoinValue, setToCoinValue] = useState("0");
   const [ratio, setRatio] = useState(0);
-
-  console.log(ratio);
 
   const updateBalance = useCallback(() => {
     axios
@@ -49,15 +48,16 @@ function Convert(props) {
     const promises = [axios.get(ASSET_CURRENCIES_INFO), axios.get(SWAPPABLE_CURRENCIES)];
     Promise.all(promises)
       .then((responses) => {
-        const currenciesInfo = responses[0].data.data.map((e) => ({
-          ccy: e.ccy,
-          logoLink: e.logoLink,
-        }));
+        // const currenciesInfo = responses[0].data.data.map((e) => ({
+        //   ccy: e.ccy,
+        //   logoLink: e.logoLink,
+        // }));
 
         const swappableCurrencies = responses[1].data.data;
+        setCoinLimits(swappableCurrencies);
         const updatedSwappableCurrencies = swappableCurrencies.map((e) => ({
           label: e.ccy,
-          logoLink: currenciesInfo.find((i) => e.ccy === i.ccy).logoLink,
+          logoLink: responses[0].data.data.find((i) => e.ccy === i.ccy).logoLink,
         }));
 
         setSwappableCoins(updatedSwappableCurrencies);
@@ -106,6 +106,7 @@ function Convert(props) {
         setToCoinValue: setToCoinValue,
         ratio: ratio,
         setRatio: setRatio,
+        coinLimits: coinLimits,
       }}
     >
       <Head>

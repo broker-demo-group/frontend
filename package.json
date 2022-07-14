@@ -17,8 +17,9 @@
     "@mui/lab": "^5.0.0-alpha.53",
     "@mui/material": "^5.0.6",
     "@mui/styles": "^5.0.2",
-    "axios": "^0.27.2",
     "@mui/x-date-pickers": "^5.0.0-alpha.7",
+    "axios": "^0.27.2",
+    "axios-retry": "^3.3.1",
     "bcryptjs": "^2.4.3",
     "chart.js": "^3.5.1",
     "date-fns": "^2.25.0",
@@ -33,9 +34,9 @@
     "react-dom": "18.2.0",
     "react-perfect-scrollbar": "^1.5.8",
     "stylis": "^4.1.1",
+    "swr": "^1.0.1",
     "uuid": "^8.3.0",
-    "yup": "^0.32.9",
-    "swr": "^1.0.1"
+    "yup": "^0.32.9"
   },
   "devDependencies": {
     "@types/node": "^18.0.0",
