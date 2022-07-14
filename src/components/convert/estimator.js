@@ -70,7 +70,11 @@ export const Estimator = (props) => {
           Estimated: 1 {toCoinLabel} = {stringRatio} {fromCoinLabel}
         </Typography>
       )}
-      {ratio === "error" && <Typography variant="caption">Error in getting quote</Typography>}
+      {ratio === "error" && (
+        <Typography variant="caption" color="red">
+          Error in getting quote
+        </Typography>
+      )}
     </>
   );
 };
