@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
-import { Checkbox, FormControlLabel, FormGroup } from "@mui/material";
+import { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import Typography from "@mui/material/Typography";
 import { ESTIMATE_QUOTE } from "src/api/convert";
 import { numberShortener } from "../../lib/numberShortener";
+import ConvertContext from "../convert/context";
 
 function estimateQuoteBody(fromCoin, toCoin, amount = 1) {
   return {
@@ -14,20 +14,22 @@ function estimateQuoteBody(fromCoin, toCoin, amount = 1) {
 }
 
 export const Estimator = (props) => {
+  // const { fromCoinLabel, toCoinLabel, estimateQuoteCallback, fromCoinAmount = 1 } = props;
   const {
-    fromCoinLabel,
-    toCoinLabel,
-    estimateQuoteCallback,
-    fromCoinAmount = 1,
-  } = props;
+    fromCoinAmount,
+    fromCoin,
+    toCoin,
+    setRatio: estimateQuoteCallback,
+  } = useContext(ConvertContext);
+
+  const fromCoinLabel = fromCoin.label;
+  const toCoinLabel = toCoin.label;
+
   const [ratio, setRatio] = useState(-1);
 
   useEffect(() => {
     axios
-      .post(
-        ESTIMATE_QUOTE,
-        estimateQuoteBody(fromCoinLabel, toCoinLabel, fromCoinAmount)
-      )
+      .post(ESTIMATE_QUOTE, estimateQuoteBody(fromCoinLabel, toCoinLabel, fromCoinAmount))
       .then((res) => {
         const dataOutput = res.data;
         if (dataOutput.code !== "0") {
@@ -53,7 +55,7 @@ export const Estimator = (props) => {
         setRatio("error");
         estimateQuoteCallback(0);
       });
-  }, [fromCoinLabel, toCoinLabel, fromCoinAmount]);
+  }, [fromCoinLabel, toCoinLabel, fromCoinAmount, estimateQuoteCallback]);
 
   const stringRatio = numberShortener(ratio);
   return (
@@ -63,9 +65,7 @@ export const Estimator = (props) => {
           Estimated: 1 {toCoinLabel} = {stringRatio} {fromCoinLabel}
         </Typography>
       )}
-      {ratio === "error" && (
-        <Typography variant="caption">Error in getting quote</Typography>
-      )}
+      {ratio === "error" && <Typography variant="caption">Error in getting quote</Typography>}
     </>
   );
 };

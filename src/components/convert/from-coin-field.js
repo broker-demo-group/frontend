@@ -1,3 +1,4 @@
+import { useContext } from "react";
 import {
   Autocomplete,
   Button,
@@ -7,19 +8,20 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import ConvertContext from "../convert/context";
 
 const ariaLabel = { "aria-label": "fromCurrency" };
 
 export const FromCoinField = (props) => {
   const {
     availBal,
-    coinSelected,
+    fromCoin: coinSelected,
     swappableCoins,
     onSelectNewCoin,
     ratio,
     onSetNewValue,
     value,
-  } = props;
+  } = useContext(ConvertContext);
   return (
     <Box>
       <Typography variant="body2">From</Typography>
@@ -47,10 +49,7 @@ export const FromCoinField = (props) => {
             justifyContent: "flex-end",
           }}
         >
-          <Button
-            variant="text"
-            onClick={() => onSetNewValue(availBal)}
-          >
+          <Button variant="text" onClick={() => onSetNewValue(availBal)}>
             MAX
           </Button>
 
@@ -62,11 +61,7 @@ export const FromCoinField = (props) => {
             id="combo-box-demo"
             options={swappableCoins}
             renderOption={(props, option) => (
-              <Box
-                component="li"
-                sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
-                {...props}
-              >
+              <Box component="li" sx={{ "& > img": { mr: 2, flexShrink: 0 } }} {...props}>
                 <img loading="lazy" width="20" src={option.logoLink} alt="" />
                 {option.label}
               </Box>
@@ -76,12 +71,7 @@ export const FromCoinField = (props) => {
             renderInput={(params) => {
               params.InputProps.startAdornment = (
                 <InputAdornment position="start">
-                  <img
-                    loading="lazy"
-                    width="20"
-                    src={coinSelected.logoLink}
-                    alt=""
-                  />
+                  <img loading="lazy" width="20" src={coinSelected.logoLink} alt="" />
                 </InputAdornment>
               );
               return <TextField {...params} />;

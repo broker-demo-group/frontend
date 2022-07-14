@@ -1,17 +1,26 @@
-import { useEffect } from 'react';
+import { useEffect, useContext } from "react";
 import { Autocomplete, Box, Input, InputAdornment, TextField, Typography } from "@mui/material";
+import ConvertContext from "../convert/context";
 
 const ariaLabel = { "aria-label": "fromCurrency" };
 
-const swappableCoins = [{ label: "BTC" }, { label: "ETH" }];
+// const swappableCoins = [{ label: "BTC" }, { label: "ETH" }];
 
 export const ToCoinField = (props) => {
-  const { coinSelected, swappableCoins, onSelectNewCoin, ratio, onSetNewValue, value, fromValue } = props;
-    
+  const {
+    toCoin: coinSelected,
+    swappableCoins,
+    onSelectNewCoin,
+    ratio,
+    setToCoinValue: onSetNewValue,
+    value,
+    fromValue,
+  } = useContext(ConvertContext);
+
   useEffect(() => {
-     onSetNewValue(fromValue / ratio);
+    onSetNewValue(fromValue / ratio);
   }, [ratio, fromValue, onSetNewValue]);
-    
+
   return (
     <Box>
       <Typography variant="body2">To</Typography>
@@ -24,7 +33,13 @@ export const ToCoinField = (props) => {
           border: "1px solid grey",
         }}
       >
-        <Input value={value} placeholder="0.00000" inputProps={ariaLabel} disableUnderline={true} onChange={(event) => onSetNewValue(event.target.value)} />
+        <Input
+          value={value}
+          placeholder="0.00000"
+          inputProps={ariaLabel}
+          disableUnderline={true}
+          onChange={(event) => onSetNewValue(event.target.value)}
+        />
         <Box
           sx={{
             display: "flex",

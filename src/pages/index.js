@@ -11,6 +11,7 @@ import axios from "axios";
 import { ASSET_CURRENCIES_INFO, SWAPPABLE_CURRENCIES } from "src/api/currencies";
 import { AccountSelector } from "../components/convert/account-selector";
 import { Estimator } from "../components/convert/estimator";
+import ConvertContext from "../components/convert/context";
 import Typography from "@mui/material/Typography";
 
 function Convert(props) {
@@ -18,8 +19,6 @@ function Convert(props) {
     { label: "BTC", logoLink: "" },
     { label: "ETH", logoLink: "" },
   ]);
-  const [currenciesInfo, setCurrenciesInfo] = useState([]);
-  const [swappableCurrencies, setSwappableCurrencies] = useState([]);
   const [fromCoin, setFromCoin] = useState({ label: "BTC", logoLink: "" });
   const [toCoin, setToCoin] = useState({ label: "ETH", logoLink: "" });
   const [fundingBal, setFundingBal] = useState(0);
@@ -38,12 +37,15 @@ function Convert(props) {
           ccy: e.ccy,
           logoLink: e.logoLink,
         }));
+
         const swappableCurrencies = responses[1].data.data;
         const updatedSwappableCurrencies = swappableCurrencies.map((e) => ({
           label: e.ccy,
           logoLink: currenciesInfo.find((i) => e.ccy === i.ccy).logoLink,
         }));
+
         setSwappableCoins(updatedSwappableCurrencies);
+
         if (updatedSwappableCurrencies.length >= 2) {
           setFromCoin(updatedSwappableCurrencies[0]);
           setToCoin(updatedSwappableCurrencies[1]);
@@ -65,7 +67,31 @@ function Convert(props) {
     (useFundingBal ? Number(fundingBal) : 0) + (useTradingBal ? Number(tradingBal) : 0);
 
   return (
-    <>
+    <ConvertContext.Provider
+      value={{
+        availBal: availBal,
+        fromCoin: fromCoin,
+        setFromCoin: setFromCoin,
+        toCoin: toCoin,
+        setToCoin: setToCoin,
+        fundingBal: fundingBal,
+        setFundingBal: setFundingBal,
+        tradingBal: tradingBal,
+        setTradingBal: setTradingBal,
+        useTradingBal: useTradingBal,
+        setUseTradingBal: setUseTradingBal,
+        useFundingBal: useFundingBal,
+        setUseFundingBal: setUseFundingBal,
+        swappableCoins: swappableCoins,
+        setSwappableCoins: setSwappableCoins,
+        fromCoinValue: fromCoinValue,
+        setFromCoinValue: setFromCoinValue,
+        toCoinValue: toCoinValue,
+        setToCoinValue: setToCoinValue,
+        ratio: ratio,
+        setRatio: setRatio,
+      }}
+    >
       <Head>
         <title>Convert | Broker Demo</title>
       </Head>
@@ -91,64 +117,23 @@ function Convert(props) {
               <Typography gutterBottom variant="h3">
                 Convert
               </Typography>
-              <FromCoinField
-                coinSelected={fromCoin}
-                availBal={availBal}
-                swappableCoins={swappableCoins}
-                onSelectNewCoin={setFromCoin}
-                onSetNewValue={setFromCoinValue}
-                value={fromCoinValue}
-              />
-              <AccountSelector
-                fromCoinLabel={fromCoin.label}
-                setFundingBal={setFundingBal}
-                setTradingBal={setTradingBal}
-                useFundingBal={useFundingBal}
-                useTradingBal={useTradingBal}
-                setUseFundingBal={setUseFundingBal}
-                setUseTradingBal={setUseTradingBal}
-                fundingBal={fundingBal}
-                tradingBal={tradingBal}
-                ratio={ratio}
-              />
+              <FromCoinField />
+              <AccountSelector />
               <Box height={16} />
               <Box sx={{ display: "flex", justifyContent: "center" }}>
                 <IconButton aria-label="switch-currencies" onClick={swapCoins}>
                   <SwapVertIcon />
                 </IconButton>
               </Box>
-              <ToCoinField
-                coinSelected={toCoin}
-                swappableCoins={swappableCoins}
-                onSelectNewCoin={setToCoin}
-                ratio={ratio}
-                onSetNewValue={setToCoinValue}
-                value={toCoinValue}
-                fromValue={fromCoinValue}
-              />
-              <Estimator
-                fromCoinAmount={fromCoinValue}
-                fromCoinLabel={fromCoin.label}
-                toCoinLabel={toCoin.label}
-                estimateQuoteCallback={setRatio}
-              />
+              <ToCoinField />
+              <Estimator />
               <Box height={16} />
-              <ConvertButton
-                handleConfirmCallback={() => {}}
-                handleCancelCallback={() => {}}
-                amount={fromCoinValue}
-                from={fromCoin.label}
-                to={toCoin.label}
-                useFunding={useFundingBal}
-                useTrading={useTradingBal}
-                fromCoinValue={fromCoinValue}
-                toCoinValue={toCoinValue}
-              />
+              <ConvertButton handleConfirmCallback={() => {}} handleCancelCallback={() => {}} />
             </Container>
           </Box>
         </Container>
       </Box>
-    </>
+    </ConvertContext.Provider>
   );
 }
 

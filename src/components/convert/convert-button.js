@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useState, useContext } from "react";
 import PropTypes from "prop-types";
 import Button from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
@@ -9,6 +9,8 @@ import DialogActions from "@mui/material/DialogActions";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import Typography from "@mui/material/Typography";
+import { CONVERT } from "../../api/convert";
+import ConvertContext from "../convert/context";
 import axios from "axios";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
@@ -21,7 +23,7 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 }));
 
 const BootstrapDialogTitle = (props) => {
-  const { children, onClose, fromCoinValue, toCoinValue, ...other } = props;
+  const { children, onClose, ...other } = props;
 
   return (
     <DialogTitle sx={{ m: 0, p: 2 }} {...other}>
@@ -70,19 +72,21 @@ const convertBody = (amount, from, to, useFunding, useTrading) => {
 
 export default function ConvertButton(props) {
   const { handleCancelCallback, handleConfirmCallback } = props;
-  const [open, setOpen] = React.useState(false);
-  const { amount, from, to, useFunding, useTrading } = props;
+  const [open, setOpen] = useState(false);
+  const {
+    fromCoinValue: amount,
+    fromCoin,
+    toCoin,
+    useFundingBal: useFunding,
+    useTradingBal: useTrading,
+  } = useContext(ConvertContext);
+  const from = fromCoin.label;
+  const to = toCoin.label;
+
   const confirmConvert = () => {
-    console.log(
-      `body: ${JSON.stringify(
-        convertBody(amount, from, to, useFunding, useTrading)
-      )}`
-    );
+    console.log(`body: ${JSON.stringify(convertBody(amount, from, to, useFunding, useTrading))}`);
     axios
-      .post(
-        "/backendservice/asset/convert/trade",
-        convertBody(amount, from, to, useFunding, useTrading)
-      )
+      .post(CONVERT, convertBody(amount, from, to, useFunding, useTrading))
       .then((res) => console.log(`convert trade: ${JSON.stringify(res)}`))
       .catch((err) => console.log(`convert error: ${err}`));
   };
@@ -102,38 +106,19 @@ export default function ConvertButton(props) {
 
   return (
     <div>
-      <Button
-        color="primary"
-        variant="contained"
-        fullWidth={true}
-        onClick={handleClickOpen}
-      >
+      <Button color="primary" variant="contained" fullWidth={true} onClick={handleClickOpen}>
         Convert
       </Button>
-      <BootstrapDialog
-        onClose={handleClose}
-        aria-labelledby="customized-dialog-title"
-        open={open}
-      >
-        <BootstrapDialogTitle
-          id="customized-dialog-title"
-          onClose={handleClose}
-        >
+      <BootstrapDialog onClose={handleClose} aria-labelledby="customized-dialog-title" open={open}>
+        <BootstrapDialogTitle id="customized-dialog-title" onClose={handleClose}>
           Slippage Warning
         </BootstrapDialogTitle>
         <DialogContent dividers>
-          <Typography gutterBottom>
-            There might be slippage in this trade. Confirm?
-          </Typography>
+          <Typography gutterBottom>There might be slippage in this trade. Confirm?</Typography>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button
-            variant="contained"
-            color="primary"
-            autoFocus
-            onClick={handleConfirm}
-          >
+          <Button variant="contained" color="primary" autoFocus onClick={handleConfirm}>
             Confirm
           </Button>
         </DialogActions>

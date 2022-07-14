@@ -1,14 +1,14 @@
-import { useEffect, useCallback } from "react";
+import { useEffect, useCallback, useContext } from "react";
 import { Checkbox, FormControlLabel, FormGroup } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import { numberShortener } from "../../lib/numberShortener";
 import { getCcyBalance } from "../../api/account";
+import ConvertContext from "../convert/context";
 import axios from "axios";
 
-// export const getCcyBalance = (ccy, account = null) => `/backendservice/asset/balances?ccy=${ccy}`;
 export const AccountSelector = (props) => {
   const {
-    fromCoinLabel = "",
+    fromCoin,
     useFundingBal,
     setUseFundingBal,
     useTradingBal,
@@ -17,13 +17,13 @@ export const AccountSelector = (props) => {
     setFundingBal,
     tradingBal,
     setTradingBal,
-  } = props;
+  } = useContext(ConvertContext);
+  const fromCoinLabel = fromCoin.label ?? "";
 
   const updateBalance = useCallback(() => {
     axios
       .get(getCcyBalance(fromCoinLabel))
       .then((res) => {
-        //   console.log(res.data.data);
         const { funding, trading } = res.data.data;
         setFundingBal(funding ?? 0);
         setTradingBal(trading ?? 0);
@@ -43,7 +43,7 @@ export const AccountSelector = (props) => {
       updateBalance();
     }, 10000);
     return () => clearInterval(interval);
-  }, []);
+  }, [updateBalance]);
 
   const stringFundBal = numberShortener(fundingBal);
   const stringTradBal = numberShortener(tradingBal);
