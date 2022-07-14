@@ -40,10 +40,9 @@ export const FromCoinField = (props) => {
     }
   }, [coinSelected, coinLimits]);
 
-  const inputOnChange = useCallback(
-    (event) => {
-      onSetNewValue(event.target.value);
-      const num = Number(event.target.value);
+  const validateInput = useCallback(
+    (val) => {
+      const num = Number(val);
       if (Number.isFinite(num)) {
         const isWithinLimits = num >= minRequired && num <= maxRequired;
         setIsWithinLimits(isWithinLimits);
@@ -51,7 +50,19 @@ export const FromCoinField = (props) => {
         setIsWithinAvailBal(isWithinBal);
       }
     },
-    [onSetNewValue, minRequired, maxRequired, availBal]
+    [minRequired, maxRequired, availBal]
+  );
+
+  useEffect(() => {
+    validateInput(stringValue);
+  }, [availBal, stringValue, validateInput]);
+
+  const inputOnChange = useCallback(
+    (event) => {
+      onSetNewValue(event.target.value);
+      validateInput(event.target.value);
+    },
+    [onSetNewValue, validateInput]
   );
 
   return (
