@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState, useContext, useCallback } from "react";
 import axios from "axios";
 import Typography from "@mui/material/Typography";
 import { ESTIMATE_QUOTE } from "src/api/convert";
@@ -26,7 +26,7 @@ export const Estimator = (props) => {
 
   const [ratio, setRatio] = useState(-1);
 
-  useEffect(() => {
+  const updatePriceQuote = useCallback(() => {
     axios
       .post(ESTIMATE_QUOTE, estimateQuoteBody(fromCoinLabel, toCoinLabel, fromCoinAmount))
       .then((res) => {
@@ -54,7 +54,13 @@ export const Estimator = (props) => {
         setRatio("error");
         estimateQuoteCallback(0);
       });
-  }, [fromCoinLabel, toCoinLabel, fromCoinAmount, estimateQuoteCallback]);
+  }, [estimateQuoteCallback, fromCoinAmount, fromCoinLabel, toCoinLabel]);
+
+  useEffect(() => {
+    updatePriceQuote();
+    const interval = setInterval(updatePriceQuote, 3000);
+    return () => clearInterval(interval);
+  }, [updatePriceQuote]);
 
   const stringRatio = numberShortener(ratio);
   return (

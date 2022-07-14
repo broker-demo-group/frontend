@@ -61,6 +61,9 @@ export const ToCoinField = (props) => {
                 {option.label}
               </Box>
             )}
+            isOptionEqualToValue={(option, value) =>
+              option.label === value.label && option.logoLink === value.logoLink
+            }
             value={coinSelected}
             sx={{ width: 150 }}
             renderInput={(params) => {

@@ -104,6 +104,9 @@ export const FromCoinField = (props) => {
             disableClearable
             id="combo-box-demo"
             options={swappableCoins}
+            isOptionEqualToValue={(option, value) =>
+              option.label === value.label && option.logoLink === value.logoLink
+            }
             renderOption={(props, option) => (
               <Box component="li" sx={{ "& > img": { mr: 2, flexShrink: 0 } }} {...props}>
                 <img loading="lazy" width="20" src={option.logoLink} alt="" />
