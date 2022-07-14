@@ -26,7 +26,6 @@ export const DashboardLayout = (props) => {
     axios
       .get(LOGIN_STATUS)
       .then((data) => {
-        console.log(data);
         const status = data.data.status ?? "";
         if (status !== "success") {
           router.push("/login");

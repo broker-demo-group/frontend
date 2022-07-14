@@ -14,7 +14,6 @@ function estimateQuoteBody(fromCoin, toCoin, amount = 0.01) {
 }
 
 export const Estimator = (props) => {
-  // const { fromCoinLabel, toCoinLabel, estimateQuoteCallback, fromCoinAmount = 1 } = props;
   const {
     fromCoinValue: fromCoinAmount,
     fromCoin,

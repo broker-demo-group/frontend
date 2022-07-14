@@ -36,6 +36,7 @@ export const ToCoinField = (props) => {
       >
         <Input
           value={value}
+          fullWidth
           placeholder="0.00000"
           inputProps={ariaLabel}
           disableUnderline={true}

@@ -72,6 +72,7 @@ export const FromCoinField = (props) => {
           inputProps={ariaLabel}
           disableUnderline={true}
           onChange={inputOnChange}
+          fullWidth
         />
         <Box
           sx={{
