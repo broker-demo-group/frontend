@@ -19,19 +19,7 @@ export const AccountSelector = (props) => {
     setTradingBal,
   } = useContext(ConvertContext);
   const fromCoinLabel = fromCoin.label ?? "";
-
-  const updateBalance = useCallback(() => {
-    axios
-      .get(getCcyBalance(fromCoinLabel))
-      .then((res) => {
-        const { funding, trading } = res.data.data;
-        setFundingBal(funding ?? 0);
-        setTradingBal(trading ?? 0);
-      })
-      .catch((err) => {
-        console.error(`error with getting balance: ${err}`);
-      });
-  }, [fromCoinLabel, setFundingBal, setTradingBal]);
+  const { updateBalance } = props;
 
   useEffect(() => {
     updateBalance();

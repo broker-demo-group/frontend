@@ -4,15 +4,13 @@ import ConvertContext from "../convert/context";
 
 const ariaLabel = { "aria-label": "fromCurrency" };
 
-// const swappableCoins = [{ label: "BTC" }, { label: "ETH" }];
-
 export const ToCoinField = (props) => {
   const {
     toCoin: coinSelected,
     swappableCoins,
-    onSelectNewCoin,
     ratio,
     setToCoinValue: onSetNewValue,
+    setToCoin: onSelectNewCoin,
     value,
     fromValue,
   } = useContext(ConvertContext);

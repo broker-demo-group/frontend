@@ -17,7 +17,7 @@ export const FromCoinField = (props) => {
     availBal,
     fromCoin: coinSelected,
     swappableCoins,
-    onSelectNewCoin,
+    setFromCoin: onSelectNewCoin,
     ratio,
     onSetNewValue,
     value,

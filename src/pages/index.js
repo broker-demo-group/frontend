@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import Head from "next/head";
 import { Box, Container } from "@mui/material";
 import { DashboardLayout } from "../components/dashboard-layout";
@@ -13,6 +13,7 @@ import { AccountSelector } from "../components/convert/account-selector";
 import { Estimator } from "../components/convert/estimator";
 import ConvertContext from "../components/convert/context";
 import Typography from "@mui/material/Typography";
+import { getCcyBalance } from "../api/account";
 
 function Convert(props) {
   const [swappableCoins, setSwappableCoins] = useState([
@@ -28,6 +29,19 @@ function Convert(props) {
   const [fromCoinValue, setFromCoinValue] = useState(0);
   const [toCoinValue, setToCoinValue] = useState(0);
   const [ratio, setRatio] = useState(0);
+
+  const updateBalance = useCallback(() => {
+    axios
+      .get(getCcyBalance(fromCoin.label))
+      .then((res) => {
+        const { funding, trading } = res.data.data;
+        setFundingBal(funding ?? 0);
+        setTradingBal(trading ?? 0);
+      })
+      .catch((err) => {
+        console.error(`error with getting balance: ${err}`);
+      });
+  }, [fromCoin, setFundingBal, setTradingBal]);
 
   useEffect(() => {
     const promises = [axios.get(ASSET_CURRENCIES_INFO), axios.get(SWAPPABLE_CURRENCIES)];
@@ -118,7 +132,7 @@ function Convert(props) {
                 Convert
               </Typography>
               <FromCoinField />
-              <AccountSelector />
+              <AccountSelector updateBalance={updateBalance} />
               <Box height={16} />
               <Box sx={{ display: "flex", justifyContent: "center" }}>
                 <IconButton aria-label="switch-currencies" onClick={swapCoins}>
@@ -128,7 +142,12 @@ function Convert(props) {
               <ToCoinField />
               <Estimator />
               <Box height={16} />
-              <ConvertButton handleConfirmCallback={() => {}} handleCancelCallback={() => {}} />
+              <ConvertButton
+                handleConfirmCallback={() => {
+                  setTimeout(updateBalance, 3000);
+                }}
+                handleCancelCallback={() => {}}
+              />
             </Container>
           </Box>
         </Container>
