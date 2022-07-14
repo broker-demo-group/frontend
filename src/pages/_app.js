@@ -8,6 +8,14 @@ import { ThemeProvider } from "@mui/material/styles";
 import { createEmotionCache } from "../utils/create-emotion-cache";
 import { theme } from "../theme";
 import fetchJson from "../lib/fetchJson";
+import { AUTH_TOKEN, IS_DEV } from "../api/constants";
+import axios from "axios";
+
+if (IS_DEV) {
+  axios.defaults.headers.common = {
+    token: AUTH_TOKEN,
+  };
+}
 
 const clientSideEmotionCache = createEmotionCache();
 

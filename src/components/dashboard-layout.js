@@ -4,6 +4,8 @@ import { styled } from "@mui/material/styles";
 import { useRouter } from "next/router";
 import { DashboardNavbar } from "./dashboard-navbar";
 import { DashboardSidebar } from "./dashboard-sidebar";
+import { LOGIN_STATUS } from "../api/account";
+import axios from "axios";
 
 const DashboardLayoutRoot = styled("div")(({ theme }) => ({
   display: "flex",
@@ -19,16 +21,19 @@ export const DashboardLayout = (props) => {
   const { children } = props;
   const [isSidebarOpen, setSidebarOpen] = useState(true);
   const router = useRouter();
-  
+
   useEffect(() => {
-    fetch("/backendservice/dashboard")
-      .then((response) => response.json())
+    axios
+      .get(LOGIN_STATUS)
       .then((data) => {
-        if (data.status !== "success") {
+        console.log(data);
+        const status = data.data.status ?? "";
+        if (status !== "success") {
           router.push("/login");
         }
-      });
-  }, []);
+      })
+      .catch((err) => console.log(`Error with login status: ${err}`));
+  }, [router]);
 
   return (
     <>

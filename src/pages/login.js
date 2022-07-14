@@ -1,33 +1,29 @@
-import { useEffect } from 'react';
+import { useEffect } from "react";
 import Head from "next/head";
 import NextLink from "next/link";
 import { useRouter } from "next/router";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import {
-  Box,
-  Button,
-  Container,
-  Link,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Container, Link, TextField, Typography } from "@mui/material";
 import fetchJson from "../lib/fetchJson";
-import useUser from "../lib/useUser";
+import { LOGIN_STATUS, LOGIN } from "../api/account";
+import axios from "axios";
 
 const Login = () => {
   const router = useRouter();
-  const url = "./backendservice/restlogin";
-  
+
   useEffect(() => {
-    fetch("/backendservice/dashboard")
-      .then((response) => response.json())
+    console.log(LOGIN_STATUS);
+    axios
+      .get(LOGIN_STATUS)
       .then((data) => {
-        if (data.status === "success") {
+        const status = data.data.status ?? "";
+        if (status === "success") {
           router.push("/");
         }
-      });
-  }, []);
+      })
+      .catch((err) => console.log(`Error with login status: ${err}`));
+  }, [router]);
 
   const formik = useFormik({
     initialValues: {
@@ -45,7 +41,7 @@ const Login = () => {
           password: values.password,
         };
 
-        const result = await fetchJson(url, {
+        const result = await fetchJson(LOGIN, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(body),
@@ -53,14 +49,9 @@ const Login = () => {
 
         if (result.status == "success") {
           router.push("/");
-          console.log("success");
-        } else {
-          console.log("not success");
         }
-        console.log("after perform_login");
       } catch (error) {
         console.log(`normal log error: ${error}`);
-        console.error(`Error occured: ${error.data.message}`);
       }
     },
   });
@@ -81,10 +72,8 @@ const Login = () => {
       >
         <Container maxWidth="sm">
           <Box sx={{ display: "flex" }}>
-            <Typography 
-              gutterBottom
-              variant="h3">
-                Welcome to Broker Demo.
+            <Typography gutterBottom variant="h3">
+              Welcome to Broker Demo.
             </Typography>
           </Box>
           <form onSubmit={formik.handleSubmit}>

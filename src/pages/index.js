@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import Head from "next/head";
 import { Box, Container } from "@mui/material";
 import { DashboardLayout } from "../components/dashboard-layout";
@@ -7,11 +8,7 @@ import ConvertButton from "../components/convert/convert-button";
 import IconButton from "@mui/material/IconButton";
 import SwapVertIcon from "@mui/icons-material/SwapVert";
 import axios from "axios";
-import { useEffect, useState } from "react";
-import {
-  ASSET_CURRENCIES_INFO,
-  SWAPPABLE_CURRENCIES,
-} from "src/api/currencies";
+import { ASSET_CURRENCIES_INFO, SWAPPABLE_CURRENCIES } from "src/api/currencies";
 import { AccountSelector } from "../components/convert/account-selector";
 import { Estimator } from "../components/convert/estimator";
 import Typography from "@mui/material/Typography";
@@ -34,10 +31,7 @@ function Convert(props) {
   const [ratio, setRatio] = useState(0);
 
   useEffect(() => {
-    const promises = [
-      axios.get(ASSET_CURRENCIES_INFO),
-      axios.get(SWAPPABLE_CURRENCIES),
-    ];
+    const promises = [axios.get(ASSET_CURRENCIES_INFO), axios.get(SWAPPABLE_CURRENCIES)];
     Promise.all(promises)
       .then((responses) => {
         const currenciesInfo = responses[0].data.data.map((e) => ({
@@ -68,8 +62,7 @@ function Convert(props) {
   };
 
   const availBal =
-    (useFundingBal ? Number(fundingBal) : 0) +
-    (useTradingBal ? Number(tradingBal) : 0);
+    (useFundingBal ? Number(fundingBal) : 0) + (useTradingBal ? Number(tradingBal) : 0);
 
   return (
     <>
@@ -84,9 +77,6 @@ function Convert(props) {
           py: 8,
         }}
       >
-        <Box sx={{ display: "flex", justifyContent: "center" }}>
-          <Typography variant="h2">Convert</Typography>
-        </Box>
         <Container maxWidth={false}>
           <Box
             component="main"
@@ -98,6 +88,9 @@ function Convert(props) {
             }}
           >
             <Container maxWidth="sm">
+              <Typography gutterBottom variant="h3">
+                Convert
+              </Typography>
               <FromCoinField
                 coinSelected={fromCoin}
                 availBal={availBal}
