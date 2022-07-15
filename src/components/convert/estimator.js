@@ -27,6 +27,7 @@ export const Estimator = (props) => {
   const [ratio, setRatio] = useState(-1);
 
   const updatePriceQuote = useCallback(() => {
+    const numCoinAmount = Number(fromCoinAmount);
     axios
       .post(ESTIMATE_QUOTE, estimateQuoteBody(fromCoinLabel, toCoinLabel, fromCoinAmount))
       .then((res) => {

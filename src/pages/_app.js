@@ -1,5 +1,4 @@
 import Head from "next/head";
-import { SWRConfig } from "swr";
 import { CacheProvider } from "@emotion/react";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
@@ -39,17 +38,8 @@ const App = (props) => {
       </Head>
       <LocalizationProvider dateAdapter={AdapterDateFns}>
         <ThemeProvider theme={theme}>
-          <SWRConfig
-            value={{
-              fetcher: fetchJson,
-              onError: (err) => {
-                console.error(err);
-              },
-            }}
-          >
-            <CssBaseline />
-            {getLayout(<Component {...pageProps} />)}
-          </SWRConfig>
+          <CssBaseline />
+          {getLayout(<Component {...pageProps} />)}
         </ThemeProvider>
       </LocalizationProvider>
     </CacheProvider>

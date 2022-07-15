@@ -84,7 +84,6 @@ export default function ConvertButton(props) {
   const to = toCoin.label;
 
   const confirmConvert = () => {
-    console.log(`body: ${JSON.stringify(convertBody(amount, from, to, useFunding, useTrading))}`);
     axios
       .post(CONVERT, convertBody(amount, from, to, useFunding, useTrading))
       .then((res) => console.log(`convert trade: ${JSON.stringify(res)}`))
