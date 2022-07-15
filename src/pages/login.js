@@ -1,29 +1,18 @@
-import { useEffect } from "react";
 import Head from "next/head";
 import NextLink from "next/link";
-import { useRouter } from "next/router";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Box, Button, Container, Link, TextField, Typography } from "@mui/material";
 import fetchJson from "../lib/fetchJson";
-import { LOGIN_STATUS, LOGIN } from "../api/account";
 import axios from "axios";
+import { LOGIN } from "../api/account";
+import useUser from "../lib/useUser";
 
 const Login = () => {
-  const router = useRouter();
-
-  useEffect(() => {
-    console.log(LOGIN_STATUS);
-    axios
-      .get(LOGIN_STATUS)
-      .then((data) => {
-        const status = data.data.status ?? "";
-        if (status === "success") {
-          router.push("/");
-        }
-      })
-      .catch((err) => console.log(`Error with login status: ${err}`));
-  }, [router]);
+  const { mutateUser } = useUser({
+    redirectTo: "/",
+    redirectIfFound: true,
+  });
 
   const formik = useFormik({
     initialValues: {
@@ -35,23 +24,27 @@ const Login = () => {
       password: Yup.string().max(255).required("Password is required"),
     }),
     onSubmit: async (values) => {
+      const body = {
+        username: values.username,
+        password: values.password,
+      };
+      // const result = await fetchJson(LOGIN, {
+      //   method: "POST",
+      //   headers: { "Content-Type": "application/json" },
+      //   body: JSON.stringify(body),
+      // });
+      console.log(`body: ${JSON.stringify(body)}`);
       try {
-        const body = {
-          username: values.username,
-          password: values.password,
-        };
-
-        const result = await fetchJson(LOGIN, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(body),
-        });
-
-        if (result.status == "success") {
-          router.push("/");
-        }
+        mutateUser(
+          await fetchJson("/api/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body),
+          })
+          // (await axios.post("/api/login", body)).data
+        );
       } catch (error) {
-        console.log(`normal log error: ${error}`);
+        console.error(`An unexpected error occured: ${error}`);
       }
     },
   });

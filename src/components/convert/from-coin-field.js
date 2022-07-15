@@ -30,7 +30,7 @@ export const FromCoinField = (props) => {
   const [maxRequired, setMaxRequired] = useState(99999);
 
   useEffect(() => {
-    const c = coinLimits.filter((coin) => coin.ccy === coinSelected.label);
+    const c = coinLimits?.filter((coin) => coin.ccy === coinSelected.label) ?? [];
     if (c.length !== 0 && c[0].min !== undefined && c[0].max !== undefined) {
       setMinRequired(c[0].min);
       setMaxRequired(c[0].max);

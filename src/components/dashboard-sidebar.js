@@ -8,6 +8,8 @@ import { XCircle as XCircleIcon } from "../icons/x-circle";
 import { Logo } from "./logo";
 import { NavItem } from "./nav-item";
 import fetchJson from "../lib/fetchJson";
+import useUser from "../lib/useUser";
+import axios from "axios";
 
 const items = [
   {
@@ -22,6 +24,7 @@ export const DashboardSidebar = (props) => {
   const { open, onClose } = props;
   //   const { user, mutateUser } = useUser();
   const router = useRouter();
+  const { mutateUser } = useUser();
   const lgUp = useMediaQuery((theme) => theme.breakpoints.up("lg"), {
     defaultMatches: true,
     noSsr: false,
@@ -101,20 +104,17 @@ export const DashboardSidebar = (props) => {
           <NavItem
             key="Logout"
             icon={<XCircleIcon fontSize="small" />}
-            href="/login"
             title="Logout"
+            href="/api/logout"
             onClick={async (e) => {
               e.preventDefault();
-              fetch("/backendservice/logout", { method: "POST" })
-                .then((res) => res.json())
-                .then((e) => console.log(`logout: ${e}`))
-                .catch((e) => console.log(`logout error: ${e}`));
-              fetchJson("/backendservice/logout", { method: "POST" })
-                .then((e) => console.log(`logout: ${e}`))
-                .catch((e) => console.log(`logout error: ${e}`));
-              // axios.post('/logout').then(res => console.log(`logout res: ${res}`)).catch(err => console.log(`error logout: ${err}`));
-              // mutateUser(await fetchJson('/api/logout', { method: 'POST' }), false);
-              router.push("/login");
+              const response = await axios.post("/api/logout");
+              if (response.message === undefined) {
+                mutateUser(response, false);
+                router.push("/login");
+              } else {
+                console.log(`logout error: ${response.message}`);
+              }
             }}
           />
         </Box>

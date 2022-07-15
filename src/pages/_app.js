@@ -7,15 +7,17 @@ import { ThemeProvider } from "@mui/material/styles";
 import { createEmotionCache } from "../utils/create-emotion-cache";
 import { theme } from "../theme";
 import fetchJson from "../lib/fetchJson";
-import { AUTH_TOKEN, IS_DEV } from "../api/constants";
 import axiosRetry from "axios-retry";
 import axios from "axios";
+import { SWRConfig } from "swr";
+import useToken from "src/lib/useToken";
+import useUser from "../lib/useUser";
 
-if (IS_DEV) {
-  axios.defaults.headers.common = {
-    token: AUTH_TOKEN,
-  };
-}
+// if (IS_DEV) {
+//   axios.defaults.headers.common = {
+//     token: AUTH_TOKEN,
+//   };
+// }
 
 const clientSideEmotionCache = createEmotionCache();
 
@@ -28,6 +30,11 @@ axiosRetry(axios, {
 const App = (props) => {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
 
+  // if cookie has token, use it whenever we do axios requests
+  useToken();
+
+  const { user } = useUser({});
+
   const getLayout = Component.getLayout ?? ((page) => page);
 
   return (
@@ -39,7 +46,16 @@ const App = (props) => {
       <LocalizationProvider dateAdapter={AdapterDateFns}>
         <ThemeProvider theme={theme}>
           <CssBaseline />
-          {getLayout(<Component {...pageProps} />)}
+          <SWRConfig
+            value={{
+              fetcher: fetchJson,
+              onError: (err) => {
+                console.error(err);
+              },
+            }}
+          >
+            {getLayout(<Component {...pageProps} />)}
+          </SWRConfig>
         </ThemeProvider>
       </LocalizationProvider>
     </CacheProvider>
