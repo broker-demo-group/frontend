@@ -21,19 +21,18 @@ import useUser from "../lib/useUser";
 
 const clientSideEmotionCache = createEmotionCache();
 
-axiosRetry(axios, {
-  retries: 3,
-  retryDelay: () => 2000,
-  onRetry: (retryCount) => console.log(`retryCount: ${retryCount}`),
-});
+// axiosRetry(axios, {
+//   retries: 3,
+//   retryDelay: () => 2000,
+//   onRetry: (retryCount) => console.log(`retryCount: ${retryCount}`),
+// });
 
 const App = (props) => {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
+  const { user } = useUser({});
 
   // if cookie has token, use it whenever we do axios requests
   useToken();
-
-  const { user } = useUser({});
 
   const getLayout = Component.getLayout ?? ((page) => page);
 

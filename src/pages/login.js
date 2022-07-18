@@ -33,15 +33,14 @@ const Login = () => {
       //   headers: { "Content-Type": "application/json" },
       //   body: JSON.stringify(body),
       // });
-      console.log(`body: ${JSON.stringify(body)}`);
       try {
         mutateUser(
-          await fetchJson("/api/login", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(body),
-          })
-          // (await axios.post("/api/login", body)).data
+          // await fetchJson("/api/login", {
+          //   method: "POST",
+          //   headers: { "Content-Type": "application/json" },
+          //   body: JSON.stringify(body),
+          // })
+          (await axios.post("/api/login", body)).data
         );
       } catch (error) {
         console.error(`An unexpected error occured: ${error}`);

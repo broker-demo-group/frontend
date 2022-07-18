@@ -21,7 +21,9 @@ export const loginWithUserAndPassword = async (user, password) => {
   try {
     const res = await axios.post(`${LOGIN}?username=${user}&password=${password}`);
     const token = res.headers["token"] ?? "";
+
     if (token === "") {
+      console.log(res);
       return { status: "failed", message: "No token received" };
     }
     return { status: "success", token: token };
@@ -34,6 +36,14 @@ export const getCcyBalance = (ccy) => `${API_URL}/asset/balances?ccy=${ccy}`;
 export const LOGOUT = `${API_URL}/logout`;
 
 export const logout = async () => {
-  const res = await axios.post(LOGOUT);
-  return res.data?.code === "0";
+  if (await isLoggedIn()) {
+    try {
+      const response = await axios.post(LOGOUT);
+      return response.data?.code === "0";
+    } catch (err) {
+      console.log(`error at logging out: ${err}`);
+      return false;
+    }
+  }
+  return true;
 };

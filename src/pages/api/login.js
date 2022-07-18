@@ -1,14 +1,15 @@
 import { withIronSessionApiRoute } from "iron-session/next";
 import { sessionOptions } from "../../lib/session";
 import { loginWithUserAndPassword } from "../../api/account";
+import axios from "axios";
 
 async function loginRoute(req, res) {
   const { username, password } = await req.body;
   // console.log(`user: ${username} pw: ${password}`);
   const response = await loginWithUserAndPassword(username, password);
-  console.log(response);
   if (response.status === "success" && response.token !== undefined) {
     const cookie = { isLoggedIn: true, token: response.token };
+    console.log(cookie);
     req.session.user = cookie;
     await req.session.save();
     res.json(cookie);

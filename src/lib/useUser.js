@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import Router from "next/router";
-import { isLoggedIn } from "../api/account";
+// import { isLoggedIn } from "../api/account";
 import useSWR from "swr";
 
-export default function useUser({ redirectTo = "", redirectIfFound = false } = {}) {
+export default function useUser({ redirectTo = "", redirectIfFound = false, token = "" } = {}) {
   const { data: user, mutate: mutateUser } = useSWR("/api/user");
 
   useEffect(() => {
@@ -15,13 +15,11 @@ export default function useUser({ redirectTo = "", redirectIfFound = false } = {
       // If redirectTo is set, redirect if the user was not found.
       (redirectTo && !redirectIfFound && !user?.isLoggedIn) ||
       // If redirectIfFound is also set, redirect if the user was found
-      (redirectIfFound && user?.isLoggedIn) ||
-      // assuming token can expire, we need to check if token is still valid
-      !isLoggedIn()
+      (redirectIfFound && user?.isLoggedIn)
     ) {
       Router.push(redirectTo);
     }
-  }, [user, redirectIfFound, redirectTo]);
+  }, [user, redirectIfFound, redirectTo, token]);
 
   return { user, mutateUser };
 }

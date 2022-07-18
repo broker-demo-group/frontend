@@ -52,7 +52,6 @@ function Convert(props) {
         //   ccy: e.ccy,
         //   logoLink: e.logoLink,
         // }));
-
         const swappableCurrencies = responses[1].data.data;
         setCoinLimits(swappableCurrencies);
         const updatedSwappableCurrencies = swappableCurrencies.map((e) => ({

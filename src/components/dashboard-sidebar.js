@@ -7,9 +7,10 @@ import { User as UserIcon } from "../icons/user";
 import { XCircle as XCircleIcon } from "../icons/x-circle";
 import { Logo } from "./logo";
 import { NavItem } from "./nav-item";
-import fetchJson from "../lib/fetchJson";
+import { logout as apiLogout, LOGOUT } from "../api/account";
 import useUser from "../lib/useUser";
 import axios from "axios";
+import logout from "src/pages/api/logout";
 
 const items = [
   {
@@ -108,13 +109,20 @@ export const DashboardSidebar = (props) => {
             href="/api/logout"
             onClick={async (e) => {
               e.preventDefault();
-              const response = await axios.post("/api/logout");
-              if (response.message === undefined) {
-                mutateUser(response, false);
-                router.push("/login");
-              } else {
-                console.log(`logout error: ${response.message}`);
+              // const logoutResponse = await apiLogout();
+              // console.log(logoutResponse);
+              const isLogoutSuccessful = await apiLogout();
+              if (isLogoutSuccessful) {
+                const response = await axios.post("/api/logout");
+                if (response.message === undefined) {
+                  mutateUser(response, false);
+                  router.push("/login");
+                } else {
+                  console.log(`logout error: ${response.message}`);
+                }
+                return;
               }
+              console.log(`failed logout...`);
             }}
           />
         </Box>
