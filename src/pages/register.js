@@ -13,7 +13,8 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import fetchJson from "../lib/fetchJson";
+import { register } from "../api/account";
+import axios from "axios";
 
 const Register = () => {
   const router = useRouter();
@@ -36,13 +37,8 @@ const Register = () => {
       policy: Yup.boolean().oneOf([true], "This field must be checked"),
     }),
     onSubmit: async (values) => {
-      const sendTo = `https://broker.tinykittens.dev/backendservice/register?email=${values.email}&firstName=${values.firstName}&lastName=${values.lastName}&passWord=${values.password}&userName=${values.username}`;
-      //const sendTo = '/perform_register';
       try {
-        const res = await fetchJson(sendTo, {
-          method: "POST",
-          body: JSON.stringify(values),
-        });
+        const res = await axios.post(register(values));
         console.log(`response: ${JSON.stringify(res)}`);
         router.push("/login");
       } catch (error) {

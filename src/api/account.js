@@ -23,8 +23,9 @@ export const loginWithUserAndPassword = async (user, password) => {
     const token = res.headers["token"] ?? "";
 
     if (token === "") {
+      console.log("no token after login");
       console.log(res);
-      return { status: "failed", message: "No token received" };
+      return { status: "failed", message: `No token received because ${res.data}` };
     }
     return { status: "success", token: token };
   } catch (err) {
@@ -46,4 +47,16 @@ export const logout = async () => {
     }
   }
   return true;
+};
+
+export const REGISTER = `${API_URL}/register`;
+
+export const registerWithFormData = (values) => {
+  const { email, firstName, lastName, password, username } = values;
+  return `${API_URL}/register?email=${email}&firstName=${firstName}&lastName=${lastName}&passWord=${password}&userName=${username}`;
+};
+
+export const register = async (values) => {
+  const response = await axios.post(registerWithFormData(values));
+  return response;
 };

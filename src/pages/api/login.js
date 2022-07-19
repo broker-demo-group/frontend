@@ -14,9 +14,9 @@ async function loginRoute(req, res) {
     await req.session.save();
     res.json(cookie);
   } else {
-    const msg = res.message ?? "Unknown error";
-
-    res.status(500).json({ message: msg });
+    const msg = response.message ?? "Unknown error";
+    res.json({ message: msg });
+    // res.status(500).json({ message: msg });
   }
 }
 

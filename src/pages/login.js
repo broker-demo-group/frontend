@@ -3,9 +3,7 @@ import NextLink from "next/link";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Box, Button, Container, Link, TextField, Typography } from "@mui/material";
-import fetchJson from "../lib/fetchJson";
 import axios from "axios";
-import { LOGIN } from "../api/account";
 import useUser from "../lib/useUser";
 
 const Login = () => {
@@ -28,22 +26,15 @@ const Login = () => {
         username: values.username,
         password: values.password,
       };
-      // const result = await fetchJson(LOGIN, {
-      //   method: "POST",
-      //   headers: { "Content-Type": "application/json" },
-      //   body: JSON.stringify(body),
-      // });
       try {
-        mutateUser(
-          // await fetchJson("/api/login", {
-          //   method: "POST",
-          //   headers: { "Content-Type": "application/json" },
-          //   body: JSON.stringify(body),
-          // })
-          (await axios.post("/api/login", body)).data
-        );
+        const loginResponse = await axios.post("/api/login", body);
+        if (loginResponse.data.token) {
+          mutateUser(loginResponse.data);
+        } else {
+          console.log(`Error occured: ${loginResponse.data.message}`);
+        }
       } catch (error) {
-        console.error(`An unexpected error occured: ${error}`);
+        console.error(`An unexpected error occured: ${error.message}`);
       }
     },
   });
@@ -74,7 +65,6 @@ const Login = () => {
                 Sign in
               </Typography>
             </Box>
-
             <TextField
               error={Boolean(formik.touched.username && formik.errors.username)}
               fullWidth
