@@ -20,12 +20,14 @@ export const LOGIN = `${API_URL}/login`;
 export const loginWithUserAndPassword = async (user, password) => {
   try {
     const res = await axios.post(`${LOGIN}?username=${user}&password=${password}`);
-    const token = res.headers["token"] ?? "";
+    console.log(res);
+    const token = res.data.data ?? "";
+    // const token = res.headers["token"] ?? "";
 
     if (token === "") {
       console.log("no token after login");
       console.log(res);
-      return { status: "failed", message: `No token received because ${res.data}` };
+      return { status: "failed", message: `No token received because ${JSON.stringify(res.data)}` };
     }
     return { status: "success", token: token };
   } catch (err) {
